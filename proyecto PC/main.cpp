@@ -14,7 +14,7 @@
 using namespace std;
 
 void addHoja(){
-    cout <<"hola wapossss"<<endl;
+    cout <<"hola waposssss santi es dios"<<endl;
 }
 
 void generarR(){}
