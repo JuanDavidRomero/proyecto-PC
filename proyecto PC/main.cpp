@@ -10,12 +10,29 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "listas.cpp"
 
 using namespace std;
 
-void addHoja(){
-    cout <<"hola waposssss santi es dios"<<endl;
-    cout <<" c:"<<'\n';
+
+struct datosHoja{
+    int filasH;
+    int columnasH;
+    int nHoja;
+    
+};
+
+struct celdas{
+    char fila;
+    char columna;
+    char *valor;
+};
+
+void addHoja(datosHoja anadir){
+    cout<<"cuantas filas tendra su hoja de calculo"<<endl;
+    cin >> anadir.filasH;
+    cout<<"cuantas columnas tendra su hoja de calculo"<<endl;
+    cin >> anadir.columnasH;
 }
 
 void generarR(){}
@@ -23,6 +40,9 @@ void generarR(){}
 void reclamarR(){}
 
 int main() {
+    datosHoja anadir;
+    celdas infoC;
+    anadir.nHoja = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -39,7 +59,8 @@ int main() {
         switch (opcion){
             case 'A':
             case 'a':
-                addHoja();
+                anadir.nHoja++;
+                addHoja(anadir);
                 break;
             case 'B':
             case 'b':
