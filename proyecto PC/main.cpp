@@ -19,10 +19,10 @@ struct datosHoja{
     int filasH;
     int columnasH;
     int nHoja;
-    
+
 };
 
-struct celdas{
+struct celda{
     char fila;
     char columna;
     char *valor;
@@ -41,37 +41,34 @@ void reclamarR(){}
 
 int main() {
     datosHoja anadir;
-    celdas infoC;
+    celda infoC;
     anadir.nHoja = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
         cout<<"SUPER CALCULOS S.A."<<endl;
         cout<<"------------------------------"<<endl;
-        cout<<"A = ingresar nueva hoja de calculo"<<endl;
-        cout<<"B = generar reporte"<<endl;
-        cout<<"C = reclamar reporte"<<endl;
-        cout<<"E = salir"<<endl;
+        cout<<"1. Ingresar nueva hoja de calculo"<<endl;
+        cout<<"2. Generar reporte"<<endl;
+        cout<<"3. Reclamar reporte"<<endl;
+        cout<<"4. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
-        cout<<"seleccione"<<endl;
+        cout<<"Seleccione el número de la opción que desea: ";
         cin >>opcion;
         switch (opcion){
-            case 'A':
-            case 'a':
+            case '1':
                 anadir.nHoja++;
                 addHoja(anadir);
                 break;
-            case 'B':
-            case 'b':
+            case '2':
                 generarR();
                 break;
             case 'C':
             case 'c':
                 reclamarR();
                 break;
-            case 'E':
-            case 'e':
+            case '3':
                 fin = false;
                 break;
             default:
