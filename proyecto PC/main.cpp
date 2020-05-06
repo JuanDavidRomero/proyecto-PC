@@ -15,6 +15,12 @@
 using namespace std;
 
 
+struct celda{
+    char fila;
+    char columna;
+    char *valor;
+};
+
 struct hoja{
     int filasH;
     int columnasH;
@@ -23,13 +29,7 @@ struct hoja{
 
 };
 
-struct celda{
-    char fila;
-    char columna;
-    char *valor;
-};
-
-void addHoja(datosHoja anadir){
+void addHoja(hoja anadir){
     cout<<"cuantas filas tendra su hoja de calculo"<<endl;
     cin >> anadir.filasH;
     cout<<"cuantas columnas tendra su hoja de calculo"<<endl;
