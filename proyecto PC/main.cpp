@@ -15,10 +15,11 @@
 using namespace std;
 
 
-struct datosHoja{
+struct hoja{
     int filasH;
     int columnasH;
-    int nHoja;
+    int idHoja;
+    celda** celdas;
 
 };
 
@@ -40,9 +41,9 @@ void generarR(){}
 void reclamarR(){}
 
 int main() {
-    datosHoja anadir;
+    hoja anadir;
     celda infoC;
-    anadir.nHoja = 0;
+    anadir.idHoja = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -58,7 +59,7 @@ int main() {
         cin >>opcion;
         switch (opcion){
             case '1':
-                anadir.nHoja++;
+                anadir.idHoja++;
                 addHoja(anadir);
                 break;
             case '2':
