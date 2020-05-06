@@ -30,9 +30,9 @@ struct hoja{
 };
 
 void addHoja(hoja anadir){
-    cout<<"cuantas filas tendra su hoja de calculo"<<endl;
+    cout<<"cuantas filas tendra su hoja de calculo?"<<endl;
     cin >> anadir.filasH;
-    cout<<"cuantas columnas tendra su hoja de calculo"<<endl;
+    cout<<"cuantas columnas tendra su hoja de calculo?"<<endl;
     cin >> anadir.columnasH;
 }
 
