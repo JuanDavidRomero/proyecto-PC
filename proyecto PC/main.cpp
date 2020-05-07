@@ -20,7 +20,8 @@ struct sCelda{
     char* nombre;
     char fila;
     char columna;
-    char* valor;
+    char* formula;
+    float valorNumerico;
 };
 
 struct sHoja{
@@ -47,7 +48,7 @@ sCelda** crearMatriz(int f, int c)
         for(int j = 0; j < c; j++){
             (*(*(cel+i)+j)).columna = j;
             (*(*(cel+i)+j)).fila = i;
-            (*(*(cel+i)+j)).valor = new char[30];
+            (*(*(cel+i)+j)).formula = new char[30];
             cout<<"dijite el valor de la casilla "<< i <<"/"<< j<<endl;
             if(i==0&&j==0)
                 cin.ignore(1);
