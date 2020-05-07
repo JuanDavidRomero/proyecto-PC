@@ -57,13 +57,12 @@ sCelda** crearMatriz(int f, int c)
 
 }
 
-    cout<<"cuantas filas tendra su hoja de calculo?"<<endl;
-    cin >> hoja->filasH;
+    
 void addHoja(sHoja* hoja){
     cout<<"cuantas columnas tendra su hoja de calculo?"<<endl;
     cin >> hoja->columnasH;
-
-    cout<<"llego aqui"<<'\n';
+    cout<<"cuantas filas tendra su hoja de calculo?"<<endl;
+    cin >> hoja->filasH;
     sCelda** cels = crearMatriz(hoja->filasH, hoja->columnasH);
     hoja->celdas = cels;
 }
