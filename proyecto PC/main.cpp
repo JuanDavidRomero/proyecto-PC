@@ -17,6 +17,7 @@ using namespace std;
 
 
 struct sCelda{
+    char* nombre;
     char fila;
     char columna;
     char* valor;
@@ -36,21 +37,60 @@ sCelda** crearMatriz(int f, int c)
 
     sCelda** cel = new sCelda*[c];
 
-    for(int i = 0; i < c; i++)
+    for(int i = 0; i < f; i++)
     {
-        *(cel+i)= new sCelda[f];
+        *(cel+i)= new sCelda[c];
     }
 
-    for(int i = 0; i < c; i++){
-        
-        for(int j = 0; j < f; j++){
-            (*(*(cel+i)+j)).columna = i;
-            (*(*(cel+i)+j)).fila = j;
+    for(int i = 0; i < f; i++){
+
+        for(int j = 0; j < c; j++){
+            (*(*(cel+i)+j)).columna = j;
+            (*(*(cel+i)+j)).fila = i;
             (*(*(cel+i)+j)).valor = new char[30];
-            cout<<"dijite el valor de la casilla "<< (*(*(cel+i)+j)).fila <<"/"<< (*(*(cel+i)+j)).columna<<endl;
+            cout<<"dijite el valor de la casilla "<< i <<"/"<< j<<endl;
             if(i==0&&j==0)
                 cin.ignore(1);
             cin.getline((*(*(cel+i)+j)).valor,30,'\n');
+
+            int c = j+1;
+            char * nom = new char[4];
+
+            char p = '0';
+            char s = '0';
+            char t = '0';
+
+            int a = 0;
+            int b = 0;
+
+
+            a = (c-1)/26;
+            b = (c-1)%26;
+            t = b + 65;
+            c = a;
+
+            a = (c-1)/26;
+            b = (c-1)%26;
+            s = b + 65;
+            c = a;
+
+            a = (c-1)/26;
+            b = (c-1)%26;
+            p = b + 65;
+            c = a;
+
+            if(p<65)
+                p = ' ';
+            if(s<65)
+                s = ' ';
+            if(t<65)
+                t = ' ';
+
+            *(nom+0) = p;
+            *(nom+1) = s;
+            *(nom+2) = t;
+            *(nom+3) = '\0';
+            cout<<nom<<'\n';
 
         }
     }
@@ -76,11 +116,12 @@ void guardarAr(sHoja* hoja){
     cout<<"dijite el nombre del archivo que va a guardar"<<endl;
     cin.getline(nombre, 40, '\n');
     strcat(nombre,".txt");
+
     nombres.assign(nombre,strlen(nombre));
     cout<<nombres<<endl;
     arHoja.open(nombres.c_str(), ios::out);
-    for(int i = 0; i < hoja->columnasH; i++){
-        for(int j = 0; j < hoja->filasH; j++){
+    for(int i = 0; i < hoja->filasH; i++){
+        for(int j = 0; j < hoja->columnasH; j++){
             arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
         }
         arHoja<<'\n';
@@ -94,15 +135,15 @@ void imprimirHoja(sHoja* hoja)
     int cols = hoja->columnasH;
     int filas = hoja->filasH;
 
-     for(int i = 0; i < cols; i++)
+     for(int i = 0; i < filas; i++)
     {
-        for(int j = 0; j < filas; j++)
+        for(int j = 0; j < cols; j++)
         {
             cout<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
         }
         cout<<'\n';
     }
-    
+
     guardarAr(hoja);
 }
 
