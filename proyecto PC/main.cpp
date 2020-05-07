@@ -32,6 +32,49 @@ struct sHoja{
 
 };
 
+char* calcularNombreColumna(int col)
+{
+    int c = col+1;
+    char * nom = new char[4];
+
+    char p = '0';
+    char s = '0';
+    char t = '0';
+
+    int a = 0;
+    int b = 0;
+
+
+    a = (c-1)/26;
+    b = (c-1)%26;
+    t = b + 65;
+    c = a;
+
+    a = (c-1)/26;
+    b = (c-1)%26;
+    s = b + 65;
+    c = a;
+
+    a = (c-1)/26;
+    b = (c-1)%26;
+    p = b + 65;
+    c = a;
+
+    if(p<65)
+        p = ' ';
+    if(s<65)
+        s = ' ';
+    if(t<65)
+        t = ' ';
+
+    *(nom+0) = p;
+    *(nom+1) = s;
+    *(nom+2) = t;
+    *(nom+3) = '\0';
+    return nom;
+
+}
+
 
 sCelda** crearMatriz(int f, int c)
 {
@@ -52,46 +95,14 @@ sCelda** crearMatriz(int f, int c)
             cout<<"dijite el valor de la casilla "<< i <<"/"<< j<<endl;
             if(i==0&&j==0)
                 cin.ignore(1);
-            cin.getline((*(*(cel+i)+j)).valor,30,'\n');
-
-            int c = j+1;
-            char * nom = new char[4];
-
-            char p = '0';
-            char s = '0';
-            char t = '0';
-
-            int a = 0;
-            int b = 0;
+            cin.getline((*(*(cel+i)+j)).formula,30,'\n');
 
 
-            a = (c-1)/26;
-            b = (c-1)%26;
-            t = b + 65;
-            c = a;
-
-            a = (c-1)/26;
-            b = (c-1)%26;
-            s = b + 65;
-            c = a;
-
-            a = (c-1)/26;
-            b = (c-1)%26;
-            p = b + 65;
-            c = a;
-
-            if(p<65)
-                p = ' ';
-            if(s<65)
-                s = ' ';
-            if(t<65)
-                t = ' ';
-
-            *(nom+0) = p;
-            *(nom+1) = s;
-            *(nom+2) = t;
-            *(nom+3) = '\0';
-            cout<<nom<<'\n';
+            (*(*(cel+i)+j)).nombre = calcularNombreColumna(j);
+            char* nomFila = new char[3];
+            itoa(i+1, nomFila, 10);
+            strcat((*(*(cel+i)+j)).nombre, nomFila);
+            cout<<(*(*(cel+i)+j)).nombre<<'\n';
 
         }
     }
@@ -123,7 +134,7 @@ void guardarAr(sHoja* hoja){
     arHoja.open(nombres.c_str(), ios::out);
     for(int i = 0; i < hoja->filasH; i++){
         for(int j = 0; j < hoja->columnasH; j++){
-            arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
+            arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).formula<<'\t'<<"|";
         }
         arHoja<<'\n';
     }
@@ -140,7 +151,7 @@ void imprimirHoja(sHoja* hoja)
     {
         for(int j = 0; j < cols; j++)
         {
-            cout<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
+            cout<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).formula<<'\t'<<"|";
         }
         cout<<'\n';
     }
