@@ -71,16 +71,21 @@ void addHoja(sHoja* hoja){
 
 void guardarAr(sHoja* hoja){
     ofstream arHoja;
-    string nombre;
+    char *nombre = new char[40];
+    string nombres;
     cout<<"dijite el nombre del archivo que va a guardar"<<endl;
-    getline(cin,nombre);
-    arHoja.open(nombre.c_str(), ios::out);
+    cin.getline(nombre, 40, '\n');
+    strcat(nombre,".txt");
+    nombres.assign(nombre,strlen(nombre));
+    cout<<nombres<<endl;
+    arHoja.open(nombres.c_str(), ios::out);
     for(int i = 0; i < hoja->columnasH; i++){
         for(int j = 0; j < hoja->filasH; j++){
             arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
         }
         arHoja<<'\n';
     }
+    arHoja.close();
 }
 
 void imprimirHoja(sHoja* hoja)
@@ -104,8 +109,20 @@ void imprimirHoja(sHoja* hoja)
 
 
 void generarR(){
+    ifstream entrada;
+    char *nombre = new char[40];
+    string nombres;
     cout<<"por favor indique el nombre del archivo al que desea generar reporte"<<endl;
-    
+    cin.ignore(1);
+    cin.getline(nombre, 40, '\n');
+    strcat(nombre,".txt");
+    nombres.assign(nombre,strlen(nombre));
+    entrada.open(nombres.c_str(), ios::in);
+    if(entrada.fail())
+        cout<<"el archivo no se pudo abrir o no existe"<<endl;
+    else{
+        cout<<"si entro"<<endl;
+    }
 }
 
 void reclamarR(){}
