@@ -45,9 +45,8 @@ sCelda** crearMatriz(int f, int c)
         for(int j = 0; j < f; j++)
         {
             (*(*(cel+i)+j)).columna = i;
-            (*(*(cel+i)+j)).valor = new char[30];
             (*(*(cel+i)+j)).fila = j;
-
+            (*(*(cel+i)+j)).valor = new char[30];
             *((*(*(cel+i)+j)).valor) = 'h';
 
         }
@@ -57,7 +56,7 @@ sCelda** crearMatriz(int f, int c)
 
 }
 
-    
+
 void addHoja(sHoja* hoja){
     cout<<"cuantas columnas tendra su hoja de calculo?"<<endl;
     cin >> hoja->columnasH;
