@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <fstream>
 #include "listas.cpp"
 
 using namespace std;
@@ -40,14 +41,16 @@ sCelda** crearMatriz(int f, int c)
         *(cel+i)= new sCelda[f];
     }
 
-    for(int i = 0; i < c; i++)
-    {
-        for(int j = 0; j < f; j++)
-        {
+    for(int i = 0; i < c; i++){
+        
+        for(int j = 0; j < f; j++){
             (*(*(cel+i)+j)).columna = i;
             (*(*(cel+i)+j)).fila = j;
             (*(*(cel+i)+j)).valor = new char[30];
-            *((*(*(cel+i)+j)).valor) = 'h';
+            cout<<"dijite el valor de la casilla "<< (*(*(cel+i)+j)).fila <<"/"<< (*(*(cel+i)+j)).columna<<endl;
+            if(i==0&&j==0)
+                cin.ignore(1);
+            cin.getline((*(*(cel+i)+j)).valor,30,'\n');
 
         }
     }
@@ -66,8 +69,23 @@ void addHoja(sHoja* hoja){
     hoja->celdas = cels;
 }
 
+void guardarAr(sHoja* hoja){
+    ofstream arHoja;
+    string nombre;
+    cout<<"dijite el nombre del archivo que va a guardar"<<endl;
+    getline(cin,nombre);
+    arHoja.open(nombre.c_str(), ios::out);
+    for(int i = 0; i < hoja->columnasH; i++){
+        for(int j = 0; j < hoja->filasH; j++){
+            arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
+        }
+        arHoja<<'\n';
+    }
+}
+
 void imprimirHoja(sHoja* hoja)
 {
+    cout<<"su hoja de calculo es la siguiente"<<endl;
     int cols = hoja->columnasH;
     int filas = hoja->filasH;
 
@@ -75,13 +93,20 @@ void imprimirHoja(sHoja* hoja)
     {
         for(int j = 0; j < filas; j++)
         {
-            cout<<(*(*(hoja->celdas+i)+j)).valor<<'\t';
+            cout<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).valor<<'\t'<<"|";
         }
         cout<<'\n';
     }
+    
+    guardarAr(hoja);
 }
 
-void generarR(){}
+
+
+void generarR(){
+    cout<<"por favor indique el nombre del archivo al que desea generar reporte"<<endl;
+    
+}
 
 void reclamarR(){}
 
@@ -106,12 +131,12 @@ int main() {
             case '1':
                 hoja1->idHoja++;
                 addHoja(hoja1);
+                imprimirHoja(hoja1);
                 break;
             case '2':
                 generarR();
                 break;
             case '3':
-                imprimirHoja(hoja1);
                 reclamarR();
                 break;
             case '4':
