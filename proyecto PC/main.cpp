@@ -71,6 +71,15 @@ char* calcularNombreColumna(int col)
     *(nom+1) = s;
     *(nom+2) = t;
     *(nom+3) = '\0';
+
+    for(int i = 0; i < strlen(nom); i++)
+    {
+        if(*(nom+i) != ' ')
+        {
+            nom = nom+i;
+            break;
+        }
+    }
     return nom;
 
 }
@@ -91,18 +100,20 @@ sCelda** crearMatriz(int f, int c)
         for(int j = 0; j < c; j++){
             (*(*(cel+i)+j)).columna = j;
             (*(*(cel+i)+j)).fila = i;
-            (*(*(cel+i)+j)).formula = new char[30];
-            cout<<"dijite el valor de la casilla "<< i <<"/"<< j<<endl;
-            if(i==0&&j==0)
-                cin.ignore(1);
-            cin.getline((*(*(cel+i)+j)).formula,30,'\n');
-
 
             (*(*(cel+i)+j)).nombre = calcularNombreColumna(j);
             char* nomFila = new char[3];
             itoa(i+1, nomFila, 10);
             strcat((*(*(cel+i)+j)).nombre, nomFila);
             cout<<(*(*(cel+i)+j)).nombre<<'\n';
+
+            (*(*(cel+i)+j)).formula = new char[30];
+            cout<<"dijite el valor de la casilla "<< (*(*(cel+i)+j)).nombre<<endl;
+            if(i==0&&j==0)
+                cin.ignore(1);
+            cin.getline((*(*(cel+i)+j)).formula,30,'\n');
+
+
 
         }
     }
