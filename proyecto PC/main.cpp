@@ -15,25 +15,72 @@
 using namespace std;
 
 
-struct celda{
+struct sCelda{
     char fila;
     char columna;
-    char *valor;
+    char* valor;
 };
 
-struct hoja{
+struct sHoja{
     int filasH;
     int columnasH;
     int idHoja;
-    celda** celdas;
+    sCelda** celdas;
 
 };
 
-void addHoja(hoja anadir){
-    cout<<"cuantas filas tendra su hoja de calculo?ajajajajajajajaja"<<endl;
-    cin >> anadir.filasH;
+
+sCelda** crearMatriz(int f, int c)
+{
+
+    sCelda** cel = new sCelda*[c];
+
+    for(int i = 0; i < c; i++)
+    {
+        *(cel+i)= new sCelda[f];
+    }
+
+    for(int i = 0; i < c; i++)
+    {
+        for(int j = 0; j < f; j++)
+        {
+            (*(*(cel+i)+j)).columna = i;
+            (*(*(cel+i)+j)).valor = new char[30];
+            (*(*(cel+i)+j)).fila = j;
+
+            *((*(*(cel+i)+j)).valor) = 'h';
+
+        }
+    }
+
+    return cel;
+
+}
+
+    cout<<"cuantas filas tendra su hoja de calculo?"<<endl;
+    cin >> hoja->filasH;
+void addHoja(sHoja* hoja){
     cout<<"cuantas columnas tendra su hoja de calculo?"<<endl;
-    cin >> anadir.columnasH;
+    cin >> hoja->columnasH;
+
+    cout<<"llego aqui"<<'\n';
+    sCelda** cels = crearMatriz(hoja->filasH, hoja->columnasH);
+    hoja->celdas = cels;
+}
+
+void imprimirHoja(sHoja* hoja)
+{
+    int cols = hoja->columnasH;
+    int filas = hoja->filasH;
+
+     for(int i = 0; i < cols; i++)
+    {
+        for(int j = 0; j < filas; j++)
+        {
+            cout<<(*(*(hoja->celdas+i)+j)).valor<<'\t';
+        }
+        cout<<'\n';
+    }
 }
 
 void generarR(){}
@@ -41,9 +88,9 @@ void generarR(){}
 void reclamarR(){}
 
 int main() {
-    hoja anadir;
-    celda infoC;
-    anadir.idHoja = 0;
+    sHoja* hoja1;
+    sCelda infoC;
+    hoja1->idHoja = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -59,17 +106,17 @@ int main() {
         cin >>opcion;
         switch (opcion){
             case '1':
-                anadir.idHoja++;
-                addHoja(anadir);
+                hoja1->idHoja++;
+                addHoja(hoja1);
                 break;
             case '2':
                 generarR();
                 break;
-            case 'C':
-            case 'c':
+            case '3':
+                imprimirHoja(hoja1);
                 reclamarR();
                 break;
-            case '3':
+            case '4':
                 fin = false;
                 break;
             default:
