@@ -3,7 +3,7 @@
 //  proyecto PC
 //
 //  Created by David Romero on 23/04/20.
-//  Copyright Â© 2020 Arct. All rights reserved.
+//  Copyright © 2020 Arct. All rights reserved.
 //
 
 #include <iostream>
@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fstream>
+#include <cmath>
 #include "listas.cpp"
 
 using namespace std;
@@ -32,7 +33,7 @@ struct sHoja{
 
 };
 
-char* calcularNombreColumna(int col)
+char* calcularNombreColumna(int col) //Col va de 0 a 18277
 {
     int c = col+1;
     char * nom = new char[4];
@@ -81,13 +82,94 @@ char* calcularNombreColumna(int col)
         }
     }
     return nom;
-
 }
 
+int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
+{
+    int resp = 0;
+    int length = strlen(col);
+    if(length < 2)
+    {
+        resp = -1;
+    }
+
+    for(int i = length-1; i >= 0; i--)
+    {
+        resp += (col[ length - i - 1] - 64) *  pow(26, i);
+    }
+
+    return resp;
+}
+
+void editarHoja(sHoja* hoja)
+{
+    char s = 's';
+    while(s == 's' )
+    {
+        cout<< "Digite el nombre de la celda (ej: ABC321) que quiere modificar"<<'\n';
+        char* resp = new char[10];
+        cin.ignore(1);
+        cin.getline(resp, 10, '\n');
+
+        cout<<"Se leyo: "<<resp<<'\n';
+
+        int col = 0;
+        int fil = 0;
+
+        if(resp[0] >= 65 && resp[0] <= 90)//El usuario escogio buscar por el nombre de la celda
+        {
+            int i = 0;
+            for(i = 0; i < strlen(resp); i++)
+            {
+                if(!(resp[i] >= 65 && resp[i] <= 90))
+                {
+                    break; //Encontro la posición del primer caracter que no es una letra
+                }
+            }
+
+            char* filChar = (resp+i);
+            fil = atoi(filChar);
+            cout<<"Escogio la fila: "<<fil<<'\n';
+            fil--;
+
+
+            char* colChars = new char[strlen(resp) - strlen(resp+i)];
+            for(int j = 0; j<i; j++)
+            {
+                colChars[j] = resp[j];
+            }
+
+
+            col = calcularNumeroColumna(colChars);
+            cout<<"Escogio la columna: "<<col<< " de lo que se leyo: "<< colChars<<'\n';
+
+            cout<<"Celda: "<<calcularNombreColumna(col)<<fil+1<<  "   real:  "<<(*(*(hoja->celdas+fil)+col)).nombre<<'\n';
+            cout<<"Digite el valor que quiere ingresar"<<'\n';
+
+            cin.getline((*(*(hoja->celdas+fil)+col)).formula,30,'\n');
+            cout<<"Valor guardado: "<<(*(*(hoja->celdas+fil)+col)).formula<<'\n';
+
+
+        }
+        else
+        {
+            cout<<"Formato invalido. Vuelva a intentar"<<'\n';
+            s = 'r';
+        }
+
+        if(s == 'r')
+        {
+            s = 's';
+        }
+        else{
+            cout<<"Desea editar otra celda? (s/n)"<<'\n';
+            cin>>s;
+        }
+    }
+}
 
 sCelda** crearMatriz(int f, int c)
 {
-
     sCelda** cel = new sCelda*[c];
 
     for(int i = 0; i < f; i++)
@@ -97,7 +179,8 @@ sCelda** crearMatriz(int f, int c)
 
     for(int i = 0; i < f; i++){
 
-        for(int j = 0; j < c; j++){
+        for(int j = 0; j < c; j++)
+        {
             (*(*(cel+i)+j)).columna = j;
             (*(*(cel+i)+j)).fila = i;
 
@@ -108,35 +191,39 @@ sCelda** crearMatriz(int f, int c)
             cout<<(*(*(cel+i)+j)).nombre<<'\n';
 
             (*(*(cel+i)+j)).formula = new char[30];
-            cout<<"dijite el valor de la casilla "<< (*(*(cel+i)+j)).nombre<<endl;
-            if(i==0&&j==0)
-                cin.ignore(1);
-            cin.getline((*(*(cel+i)+j)).formula,30,'\n');
-
-
-
+            strcpy((*(*(cel+i)+j)).formula, "  ");
         }
     }
 
     return cel;
-
 }
 
 
+
 void addHoja(sHoja* hoja){
-    cout<<"cuantas columnas tendra su hoja de calculo?"<<endl;
+    cout<<"Cuantas columnas tendra su hoja de calculo?"<<endl;
     cin >> hoja->columnasH;
-    cout<<"cuantas filas tendra su hoja de calculo?"<<endl;
+    cout<<"Cuantas filas tendra su hoja de calculo?"<<endl;
     cin >> hoja->filasH;
     sCelda** cels = crearMatriz(hoja->filasH, hoja->columnasH);
     hoja->celdas = cels;
+
+    cout<<"Desea entrar en el modo de edición de su hoja? (s/n)"<<'\n';
+    char r = 'n';
+    cin>>r;
+
+    if(r == 's')
+    {
+        editarHoja(hoja);
+    }
 }
 
 void guardarAr(sHoja* hoja){
     ofstream arHoja;
     char *nombre = new char[40];
     string nombres;
-    cout<<"dijite el nombre del archivo que va a guardar"<<endl;
+    cout<<"Digite el nombre del archivo que va a guardar"<<endl;
+    cin.ignore(1);
     cin.getline(nombre, 40, '\n');
     strcat(nombre,".txt");
 
@@ -206,7 +293,7 @@ int main() {
         cout<<"4. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
-        cout<<"Seleccione el nÃºmero de la opciÃ³n que desea: ";
+        cout<<"Seleccione el número de la opción que desea: ";
         cin >>opcion;
         switch (opcion){
             case '1':
