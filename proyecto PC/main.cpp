@@ -144,9 +144,26 @@ void editarHoja(sHoja* hoja)
             cout<<"Escogio la columna: "<<col<< " de lo que se leyo: "<< colChars<<'\n';
 
             cout<<"Celda: "<<calcularNombreColumna(col)<<fil+1<<  "   real:  "<<(*(*(hoja->celdas+fil)+col)).nombre<<'\n';
-            cout<<"Digite el valor que quiere ingresar"<<'\n';
-
-            cin.getline((*(*(hoja->celdas+fil)+col)).formula,30,'\n');
+            
+            int val =0;
+            while(val==0){
+                cout<<"Digite el valor que quiere ingresar"<<'\n';
+                cin.getline((*(*(hoja->celdas+fil)+col)).formula,30,'\n');
+                
+                for(int i =0;i<strlen((*(*(hoja->celdas+fil)+col)).formula);i++){
+                    if(i == strlen((*(*(hoja->celdas+fil)+col)).formula)-1 )
+                        val++;
+                    cout<<"entra"<<endl;
+                    cout<<((*(*(hoja->celdas+fil)+col)).formula+i)<<endl;
+                    cout<<((*(*(hoja->celdas+fil)+col)).formula+0)<<endl;
+                
+                    if(*((*(*(hoja->celdas+fil)+col)->formula)+i) && ((*((*(*(hoja->celdas+fil)+col)).formula)+0) != '=')){
+                        cout<<"el valor dijitado es incorrecto"<<endl;
+                        cout<<"recuerde colocar el '=' antes de colocar una formula"<<endl;
+                        i = strlen((*(*(hoja->celdas+fil)+col)).formula)-1;
+                    }
+                }
+            }
             cout<<"Valor guardado: "<<(*(*(hoja->celdas+fil)+col)).formula<<'\n';
 
 
