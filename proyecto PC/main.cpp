@@ -186,13 +186,15 @@ sCelda** crearMatriz(int f, int c)
 
             (*(*(cel+i)+j)).nombre = calcularNombreColumna(j);
             char* nomFila = new char[3];
-            itoa(i+1, nomFila, 10);
+            sprintf(nomFila,"%d", i+1);
+            //itoa(i+1, nomFila, 10);
             strcat((*(*(cel+i)+j)).nombre, nomFila);
-            cout<<(*(*(cel+i)+j)).nombre<<'\n';
+            cout<<"|"<<(*(*(cel+i)+j)).nombre<<"|";
 
             (*(*(cel+i)+j)).formula = new char[30];
             strcpy((*(*(cel+i)+j)).formula, "  ");
         }
+        cout<<endl;
     }
 
     return cel;
