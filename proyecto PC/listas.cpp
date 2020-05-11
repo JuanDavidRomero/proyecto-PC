@@ -12,10 +12,15 @@ template<typename T>
 void insertList(Nodo<T> *&list, T *dato){
     Nodo<T> *Nnode = new Nodo<T>;
     Nnode->dato = dato;
+    
+    Nodo<T> *aux = list;
+    while(aux->sig != NULL && list != NULL){
+        aux = aux->sig;
+    }
     if(list == NULL)
         list = Nnode;
     else
-        list->sig = Nnode;
+        aux->sig = Nnode;
 
     Nnode->sig = NULL;
 }

@@ -3,7 +3,7 @@
 //  proyecto PC
 //
 //  Created by David Romero on 23/04/20.
-//  Copyright © 2020 Arct. All rights reserved.
+//  Copyright ï¿½ 2020 Arct. All rights reserved.
 //
 
 #include <iostream>
@@ -123,7 +123,7 @@ void editarHoja(sHoja* hoja)
             {
                 if(!(resp[i] >= 65 && resp[i] <= 90))
                 {
-                    break; //Encontro la posición del primer caracter que no es una letra
+                    break; //Encontro la posiciï¿½n del primer caracter que no es una letra
                 }
             }
 
@@ -224,7 +224,7 @@ void addHoja(sHoja* hoja){
     sCelda** cels = crearMatriz(hoja->filasH, hoja->columnasH);
     hoja->celdas = cels;
 
-    cout<<"Desea entrar en el modo de edición de su hoja? (s/n)"<<'\n';
+    cout<<"Desea entrar en el modo de ediciï¿½n de su hoja? (s/n)"<<'\n';
     char r = 'n';
     cin>>r;
 
@@ -309,7 +309,7 @@ int main() {
         cout<<"4. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
-        cout<<"Seleccione el número de la opción que desea: ";
+        cout<<"Seleccione el nï¿½mero de la opciï¿½n que desea: ";
         cin >>opcion;
         switch (opcion){
             case '1':
