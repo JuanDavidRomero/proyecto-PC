@@ -30,7 +30,12 @@ struct sHoja{
     int columnasH;
     int idHoja;
     sCelda** celdas;
+};
 
+struct sLibro{
+    Nodo<sHoja> lista;
+    char* nombreLibro;
+    int cantHojas;
 };
 
 char* calcularNombreColumna(int col) //Col va de 0 a 18277
@@ -295,9 +300,8 @@ void generarR(){
 void reclamarR(){}
 
 int main() {
-    sHoja* hoja1;
-    sCelda infoC;
-    hoja1->idHoja = 0;
+    sLibro* libro;
+    sHoja* hoja1 = NULL;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -313,7 +317,6 @@ int main() {
         cin >>opcion;
         switch (opcion){
             case '1':
-                hoja1->idHoja++;
                 addHoja(hoja1);
                 imprimirHoja(hoja1);
                 break;
