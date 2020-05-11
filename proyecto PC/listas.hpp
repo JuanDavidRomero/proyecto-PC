@@ -13,11 +13,11 @@
 
 template<typename T>
 struct Nodo{
-    T dato;
+    T *dato;
     Nodo *sig;
 };
 
 template<typename T>
-void crearlista(Nodo<T> *&list, T dato);
+void crearlista(Nodo<T> *&list, T *dato);
 
 #endif

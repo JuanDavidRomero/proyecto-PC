@@ -255,7 +255,8 @@ void addHoja(sHoja* hoja, int count){
     }
 }
 
-void guardarAr(sHoja* hoja){
+void guardarAr(Nodo<sHoja> *hoja1){
+    Nodo<sHoja> *currentNode = hoja1;
     ofstream arHoja;
     char *nombre = new char[40];
     string nombres;
@@ -265,14 +266,21 @@ void guardarAr(sHoja* hoja){
     strcat(nombre,".txt");
 
     nombres.assign(nombre,strlen(nombre));
-    cout<<nombres<<endl;
+    cout<<nombres<< " guardado"<<endl;
     arHoja.open(nombres.c_str(), ios::out);
-    for(int i = 0; i < hoja->filasH; i++){
-        for(int j = 0; j < hoja->columnasH; j++){
-            arHoja<<"|"<<'\t'<<(*(*(hoja->celdas+i)+j)).formula<<'\t'<<"|";
+    
+    while(currentNode != NULL){
+        arHoja<<"Hoja numero: "<<currentNode->dato->idHoja<<endl;
+        arHoja<<"Dimension: "<<currentNode->dato->filasH<<"x"<<currentNode->dato->columnasH<<endl;
+        for(int i = 0; i < currentNode->dato->filasH; i++){
+            for(int j = 0; j < currentNode->dato->columnasH; j++){
+                arHoja<<"|"<<'\t'<<(*(*(currentNode->dato->celdas+i)+j)).formula<<'\t'<<"|";
+            }
+            arHoja<<'\n';
         }
-        arHoja<<'\n';
+        currentNode = currentNode->sig;
     }
+    
     arHoja.close();
 }
 
@@ -318,9 +326,11 @@ void reclamarR(){}
 
 int main() {
     sLibro* libro;
+    string nueva = "si";
     infoU * usuario = NULL;
     Nodo<sHoja> *hoja = NULL;
     sHoja* hoja1 = NULL;
+    sHoja* aux;
     int id = 0, count = 0;
     char opcion;
     bool fin= true;
@@ -336,13 +346,18 @@ int main() {
         cin >>opcion;
         switch (opcion){
             case '1':
-                crearE(hoja1, id);
-                (hoja1+count)->idHoja= count+1;
-                addHoja(hoja1, count);
-                imprimirHoja(hoja1, count);
-                count++;
-                
-                guardarAr(hoja1);
+                while(nueva == "si"){
+                    crearE(hoja1, id);
+                    (hoja1+count)->idHoja= count+1;
+                    addHoja(hoja1, count);
+                    imprimirHoja(hoja1, count);
+                    aux = hoja1+count;
+                    insertList(hoja, aux);
+                    cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
+                    cin>>nueva;
+                    count++;
+                }
+                guardarAr(hoja);
                 break;
             case '2':
                 generarR(hoja, usuario);
