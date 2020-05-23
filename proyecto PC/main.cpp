@@ -102,7 +102,7 @@ void crearE(sHoja *&hoja, int &add){
     }
     delete[] hoja;
     hoja = aux;
-    
+
 }
 
 int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
@@ -153,12 +153,12 @@ void editarHoja(sHoja* hoja, int count)
             cout<<"Escogio la fila: "<<fil<<'\n';
             fil--;
 
-
             char* colChars = new char[strlen(resp) - strlen(resp+i)];
             for(int j = 0; j<i; j++)
             {
                 colChars[j] = resp[j];
             }
+            *(colChars + strlen(resp) - strlen(resp+i)) = '\0';
 
 
             col = calcularNumeroColumna(colChars);
@@ -269,7 +269,7 @@ void guardarAr(Nodo<sHoja> *hoja1){
     nombres.assign(nombre,strlen(nombre));
     cout<<nombres<< " guardado"<<endl;
     arHoja.open(nombres.c_str(), ios::out);
-    
+
     while(currentNode != NULL){
         arHoja<<"Hoja numero: "<<currentNode->dato->idHoja<<endl;
         arHoja<<"Dimension: "<<currentNode->dato->filasH<<"x"<<currentNode->dato->columnasH<<endl;
@@ -328,8 +328,8 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
         cin.getline(usuario.apellidos, 30,'\n');
         cout<<"dijite ciudad"<<endl;
         cin.getline(usuario.ciudad,30,'\n');
-        
-        
+
+
         cout<<endl;
         cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
         cout<<"SUPER CALCULOS S.A."<<endl;
@@ -345,8 +345,8 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
         cout<<"Departamento de Finanzas."<<endl;
         cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
         cout<<endl;
-        
-        
+
+
     }
     entrada.close();
     cout<<"desea guardar su reporte?"<<endl;
@@ -358,10 +358,10 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
         primero = new char[30];
         segundo = new char[30];
         for(int i = 0; i<2; i++){
-            
+
             if(i==0){
                 for(int y = 0; y<strlen(usuario.nombres);y++){
-                    
+
                     if(*(usuario.nombres +y) == ' '){
                         cout<<"entra nombre"<<endl;
                         token = strtok(usuario.nombres, " ");
@@ -429,8 +429,9 @@ int main() {
         cout<<"SUPER CALCULOS S.A."<<endl;
         cout<<"------------------------------"<<endl;
         cout<<"1. Ingresar nueva hoja de calculo"<<endl;
-        cout<<"2. reportes"<<endl;
-        cout<<"3. Salir"<<endl;
+        cout<<"2. Editar hoja de calculo"<<endl;
+        cout<<"3. reportes"<<endl;
+        cout<<"4. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
         cout<<"Seleccione el numero de la opcion que desea: ";
@@ -451,9 +452,11 @@ int main() {
                 guardarAr(hoja);
                 break;
             case '2':
+                editarHoja(hoja1, count);
+            case '3':
                 generarR(hoja, usuario);
                 break;
-            case '3':
+            case '4':
                 fin = false;
                 break;
             default:
