@@ -3,7 +3,7 @@
 //  proyecto PC
 //
 //  Created by David Romero on 23/04/20.
-//  Copyright � 2020 Arct. All rights reserved.
+//  Copyright © 2020 Arct. All rights reserved.
 //
 
 #include <iostream>
@@ -41,7 +41,7 @@ struct sLibro{
 struct infoU{
     char * nombres;
     char * apellidos;
-    string ciudad;
+    char * ciudad;
 };
 
 char* calcularNombreColumna(int col) //Col va de 0 a 18277
@@ -245,7 +245,7 @@ void addHoja(sHoja* hoja, int count){
     sCelda** cels = crearMatriz((hoja+count)->filasH, (hoja+count)->columnasH);
     (hoja+count)->celdas = cels;
 
-    cout<<"Desea entrar en el modo de edici�n de su hoja? (s/n)"<<'\n';
+    cout<<"Desea entrar en el modo de edicion de su hoja? (s/n)"<<'\n';
     char r = 'n';
     cin>>r;
 
@@ -256,6 +256,7 @@ void addHoja(sHoja* hoja, int count){
 }
 
 void guardarAr(Nodo<sHoja> *hoja1){
+    sHoja call;
     Nodo<sHoja> *currentNode = hoja1;
     ofstream arHoja;
     char *nombre = new char[40];
@@ -274,13 +275,15 @@ void guardarAr(Nodo<sHoja> *hoja1){
         arHoja<<"Dimension: "<<currentNode->dato->filasH<<"x"<<currentNode->dato->columnasH<<endl;
         for(int i = 0; i < currentNode->dato->filasH; i++){
             for(int j = 0; j < currentNode->dato->columnasH; j++){
-                arHoja<<"|"<<'\t'<<(*(*(currentNode->dato->celdas+i)+j)).formula<<'\t'<<"|";
+                //cout<<"----pasa----"<<endl;
+                //arHoja<<"|"<<'\t'<<*(*(currentNode->dato->celdas+i)+j)->formula<<'\t'<<"|";
+                arHoja<<(*(*(currentNode->dato->celdas+i)+j)).formula;
             }
             arHoja<<'\n';
         }
+        //cout<<"siguiente"<<endl;
         currentNode = currentNode->sig;
     }
-    
     arHoja.close();
 }
 
@@ -302,7 +305,7 @@ void imprimirHoja(sHoja* hoja, int count)
 
 
 
-void generarR(Nodo<sHoja> *hoja, infoU *usuario){
+void generarR(Nodo<sHoja> *hoja, infoU usuario){
     string reclamar;
     ifstream entrada;
     char *nombre = new char[40];
@@ -316,18 +319,106 @@ void generarR(Nodo<sHoja> *hoja, infoU *usuario){
     if(entrada.fail())
         cout<<"el archivo no se pudo abrir o no existe"<<endl;
     else{
-        cout<<"si entro"<<endl;
+        usuario.nombres = new char[100];
+        usuario.apellidos = new char[30];
+        usuario.ciudad = new char[30];
+        cout<<"dijite el nombre del titular"<<endl;
+        cin.getline(usuario.nombres, 30,'\n');
+        cout<<"dijite los apellidos del titular"<<endl;
+        cin.getline(usuario.apellidos, 30,'\n');
+        cout<<"dijite ciudad"<<endl;
+        cin.getline(usuario.ciudad,30,'\n');
+        
+        
+        cout<<endl;
+        cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+        cout<<"SUPER CALCULOS S.A."<<endl;
+        cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+        cout<<usuario.ciudad<<endl;
+        cout<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana <Súperior derecha> se obtuvieron los siguientes datos: "<<endl;
+        cout<<'\t'<<"Unidades producidas <inferior derecha>"<<endl;
+        cout<<'\t'<<"Unidades vendidas <Súper ior izquierda>"<<endl;
+        cout<<'\t'<<"Utilidad Operacional <inferior izquierda>"<<endl;
+        cout<<'\t'<<"Utilidad Neta <(filas/2, columnas/2)>"<<endl;
+        cout<<"Cordial Saludo"<<endl;
+        cout<<endl;
+        cout<<"Departamento de Finanzas."<<endl;
+        cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+        cout<<endl;
+        
+        
     }
+    entrada.close();
     cout<<"desea guardar su reporte?"<<endl;
     cin >>reclamar;
+    if(reclamar == "si"){
+        string nombre;
+        int nn=0;
+        char *primero, *segundo, *token;
+        primero = new char[30];
+        segundo = new char[30];
+        for(int i = 0; i<2; i++){
+            
+            if(i==0){
+                for(int y = 0; y<strlen(usuario.nombres);y++){
+                    
+                    if(*(usuario.nombres +y) == ' '){
+                        cout<<"entra nombre"<<endl;
+                        token = strtok(usuario.nombres, " ");
+                        nn++;
+                    }
+                    if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
+                        i++;
+                    }
+                }
+            }
+            if(i==1){
+                for(int y = 0; y<strlen(usuario.apellidos);y++){
+                    if(*(usuario.apellidos+y) == ' '){
+                        token = strtok(usuario.apellidos, " ");
+                        nn++;
+                    }
+                    if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
+                        i++;
+                    }
+                }
+            }
+            int j = 0;
+            if(nn < 1){
+                j=2;
+            }
+            for(; j<2 ; j++){
+                if(j == 0)
+                    strcpy(primero, token);
+                if(j==1)
+                    strcpy(segundo, token);
+                token = strtok(NULL, " ");
+            }
+            if(i==0){
+                strcat(primero,segundo);
+                strcpy(usuario.nombres, primero);
+            }
+            if(i==1){
+                strcat(primero,segundo);
+                strcpy(usuario.apellidos, primero);
+            }
+        }
+        strcat(usuario.nombres, usuario.apellidos);
+        strcat(usuario.nombres, ".txt");
+        strcpy(primero, usuario.nombres);
+        cout<<primero<<endl;
+        nombre.assign(usuario.nombres,strlen(usuario.nombres));
+        ofstream reporte(nombre.c_str(), ios::out);
+        cout<<"reporte generado"<<endl;
+        //falta guardar(cout pero en txt)
+    }
 }
 
 void reclamarR(){}
 
 int main() {
-    sLibro* libro;
     string nueva = "si";
-    infoU * usuario = NULL;
+    infoU usuario;
     Nodo<sHoja> *hoja = NULL;
     sHoja* hoja1 = NULL;
     sHoja* aux;
@@ -342,7 +433,7 @@ int main() {
         cout<<"3. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
-        cout<<"Seleccione el n�mero de la opci�n que desea: ";
+        cout<<"Seleccione el numero de la opcion que desea: ";
         cin >>opcion;
         switch (opcion){
             case '1':

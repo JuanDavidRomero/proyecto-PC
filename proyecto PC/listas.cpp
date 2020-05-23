@@ -15,12 +15,14 @@ void insertList(Nodo<T> *&list, T *dato){
     
     Nodo<T> *aux = list;
     if(list != NULL){
-        while(aux->sig != NULL && list != NULL){
+        while(aux->sig != NULL){
             aux = aux->sig;
         }
     }
-    if(list == NULL)
+    if(list == NULL){
         list = Nnode;
+        aux = list;
+    }
     else
         aux->sig = Nnode;
 
