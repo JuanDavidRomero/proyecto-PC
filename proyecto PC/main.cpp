@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fstream>
+#include <unistd.h>
 #include <cmath>
 #include "listas.cpp"
 
@@ -95,16 +96,6 @@ char* calcularNombreColumna(int col) //Col va de 0 a 18277
     return nom;
 }
 
-void crearE(sHoja *&hoja, int &add){
-    sHoja *aux = new sHoja[++add];
-    for(int i = 0; i<add-1; i++){
-        *(aux+i) = *(hoja+i);
-    }
-    delete[] hoja;
-    hoja = aux;
-
-}
-
 int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
 {
     int resp = 0;
@@ -122,7 +113,7 @@ int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
     return resp;
 }
 
-void editarHoja(sHoja* hoja, int count)
+void editarHoja(sHoja &hoja, int count)
 {
     char s = 's';
     while(s == 's' )
@@ -164,25 +155,25 @@ void editarHoja(sHoja* hoja, int count)
             col = calcularNumeroColumna(colChars);
             cout<<"Escogio la columna: "<<col<< " de lo que se leyo: "<< colChars<<'\n';
 
-            cout<<"Celda: "<<calcularNombreColumna(col)<<fil+1<<  "   real:  "<<(*(*((hoja+count)->celdas+fil)+col)).nombre<<'\n';
+            cout<<"Celda: "<<calcularNombreColumna(col)<<fil+1<<  "   real:  "<<(*(*(hoja.celdas+fil)+col)).nombre<<'\n';
 
             int val =0;
             while(val==0){
                 cout<<"Digite el valor que quiere ingresar"<<'\n';
-                cin.getline((*(*((hoja+count)->celdas+fil)+col)).formula,30,'\n');
+                cin.getline((*(*(hoja.celdas+fil)+col)).formula,30,'\n');
 
-                for(int i =0;i<strlen((*(*((hoja+count)->celdas+fil)+col)).formula);i++){
-                    if(i == strlen((*(*((hoja+count)->celdas+fil)+col)).formula)-1 )
+                for(int i =0;i<strlen((*(*(hoja.celdas+fil)+col)).formula);i++){
+                    if(i == strlen((*(*(hoja.celdas+fil)+col)).formula)-1 )
                         val++;
 
-                    if(  *((*(*(((hoja+count)->celdas)+fil)+col)).formula) != '=' &&  *((*(*(((hoja+count)->celdas)+fil)+col)).formula + i) == '+' ){
+                    if(  *((*(*((hoja.celdas)+fil)+col)).formula) != '=' &&  *((*(*((hoja.celdas)+fil)+col)).formula + i) == '+' ){
                         cout<<"el valor dijitado es incorrecto"<<endl;
                         cout<<"recuerde colocar el '=' antes de colocar una formula"<<endl;
-                        i = strlen((*(*((hoja+count)->celdas+fil)+col)).formula)-1;
+                        i = strlen((*(*(hoja.celdas+fil)+col)).formula)-1;
                     }
                 }
             }
-            cout<<"Valor guardado: "<<(*(*((hoja+count)->celdas+fil)+col)).formula<<'\n';
+            cout<<"Valor guardado: "<<(*(*(hoja.celdas+fil)+col)).formula<<'\n';
 
 
         }
@@ -237,13 +228,13 @@ sCelda** crearMatriz(int f, int c)
 
 
 
-void addHoja(sHoja* hoja, int count){
+void addHoja(sHoja &hoja, int count){
     cout<<"Cuantas columnas tendra su hoja de calculo?"<<endl;
-    cin >> (hoja+count)->columnasH;
+    cin >> hoja.columnasH;
     cout<<"Cuantas filas tendra su hoja de calculo?"<<endl;
-    cin >> (hoja+count)->filasH;
-    sCelda** cels = crearMatriz((hoja+count)->filasH, (hoja+count)->columnasH);
-    (hoja+count)->celdas = cels;
+    cin >> hoja.filasH;
+    sCelda** cels = crearMatriz(hoja.filasH, hoja.columnasH);
+    hoja.celdas = cels;
 
     cout<<"Desea entrar en el modo de edicion de su hoja? (s/n)"<<'\n';
     char r = 'n';
@@ -271,33 +262,30 @@ void guardarAr(Nodo<sHoja> *hoja1){
     arHoja.open(nombres.c_str(), ios::out);
 
     while(currentNode != NULL){
-        arHoja<<"Hoja numero: "<<currentNode->dato->idHoja<<endl;
-        arHoja<<"Dimension: "<<currentNode->dato->filasH<<"x"<<currentNode->dato->columnasH<<endl;
-        for(int i = 0; i < currentNode->dato->filasH; i++){
-            for(int j = 0; j < currentNode->dato->columnasH; j++){
-                //cout<<"----pasa----"<<endl;
-                //arHoja<<"|"<<'\t'<<*(*(currentNode->dato->celdas+i)+j)->formula<<'\t'<<"|";
-                arHoja<<(*(*(currentNode->dato->celdas+i)+j)).formula;
+        arHoja<<"Hoja numero: "<<currentNode->dato.idHoja<<endl;
+        arHoja<<"Dimension: "<<currentNode->dato.filasH<<"x"<<currentNode->dato.columnasH<<endl;
+        for(int i = 0; i < currentNode->dato.filasH; i++){
+            for(int j = 0; j < currentNode->dato.columnasH; j++){
+                arHoja<<(*(*(currentNode->dato.celdas+i)+j)).formula;
             }
             arHoja<<'\n';
         }
-        //cout<<"siguiente"<<endl;
         currentNode = currentNode->sig;
     }
     arHoja.close();
 }
 
-void imprimirHoja(sHoja* hoja, int count)
+void imprimirHoja(sHoja &hoja, int count)
 {
     cout<<"su hoja de calculo es la siguiente"<<endl;
-    int cols = (hoja+count)->columnasH;
-    int filas = (hoja+count)->filasH;
+    int cols = hoja.columnasH;
+    int filas = hoja.filasH;
 
      for(int i = 0; i < filas; i++)
     {
         for(int j = 0; j < cols; j++)
         {
-            cout<<"|"<<'\t'<<(*(*((hoja+count)->celdas+i)+j)).formula<<'\t'<<"|";
+            cout<<"|"<<'\t'<<(*(*(hoja.celdas+i)+j)).formula<<'\t'<<"|";
         }
         cout<<'\n';
     }
@@ -354,17 +342,20 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
     if(reclamar == "si"){
         string nombre;
         int nn=0;
-        char *primero, *segundo, *token;
+        char *primero, *segundo, *token, *nombres, *apellidos;
         primero = new char[30];
+        nombres = new char[30];
         segundo = new char[30];
+        apellidos = new char[30];
+        
+        strcpy(nombres, usuario.nombres);
+        strcpy(apellidos, usuario.apellidos);
         for(int i = 0; i<2; i++){
-
             if(i==0){
                 for(int y = 0; y<strlen(usuario.nombres);y++){
-
                     if(*(usuario.nombres +y) == ' '){
                         cout<<"entra nombre"<<endl;
-                        token = strtok(usuario.nombres, " ");
+                        token = strtok(nombres, " ");
                         nn++;
                     }
                     if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
@@ -375,7 +366,7 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
             if(i==1){
                 for(int y = 0; y<strlen(usuario.apellidos);y++){
                     if(*(usuario.apellidos+y) == ' '){
-                        token = strtok(usuario.apellidos, " ");
+                        token = strtok(apellidos, " ");
                         nn++;
                     }
                     if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
@@ -383,6 +374,8 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
                     }
                 }
             }
+            cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+            
             int j = 0;
             if(nn < 1){
                 j=2;
@@ -396,20 +389,35 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
             }
             if(i==0){
                 strcat(primero,segundo);
-                strcpy(usuario.nombres, primero);
+                strcpy(nombres, primero);
             }
             if(i==1){
                 strcat(primero,segundo);
-                strcpy(usuario.apellidos, primero);
+                strcpy(apellidos, primero);
             }
         }
-        strcat(usuario.nombres, usuario.apellidos);
-        strcat(usuario.nombres, ".txt");
-        strcpy(primero, usuario.nombres);
-        cout<<primero<<endl;
-        nombre.assign(usuario.nombres,strlen(usuario.nombres));
+        strcat(nombres, apellidos);
+        strcat(nombres, ".txt");
+        strcpy(primero, nombres);
+        cout<<nombres<<endl;
+        nombre.assign(nombres,strlen(nombres));
+        cout<<nombre<<endl;
         ofstream reporte(nombre.c_str(), ios::out);
-        cout<<"reporte generado"<<endl;
+        reporte<<"reporte generado"<<endl;
+        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
+        reporte<<"SUPER CALCULOS S.A."<<endl;
+        reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+        reporte<<usuario.ciudad<<endl;
+        reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana <Súperior derecha> se obtuvieron los siguientes datos: "<<endl;
+        reporte<<'\t'<<"Unidades producidas <inferior derecha>"<<endl;
+        reporte<<'\t'<<"Unidades vendidas <Súper ior izquierda>"<<endl;
+        reporte<<'\t'<<"Utilidad Operacional <inferior izquierda>"<<endl;
+        reporte<<'\t'<<"Utilidad Neta <(filas/2, columnas/2)>"<<endl;
+        reporte<<"Cordial Saludo"<<endl;
+        reporte<<endl;
+        reporte<<"Departamento de Finanzas."<<endl;
+        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
+        reporte<<endl;
         //falta guardar(cout pero en txt)
     }
 }
@@ -420,8 +428,8 @@ int main() {
     string nueva = "si";
     infoU usuario;
     Nodo<sHoja> *hoja = NULL;
-    sHoja* hoja1 = NULL;
-    sHoja* aux;
+    sHoja hoja1 ;
+    sHoja* aux = NULL;
     int id = 0, count = 0;
     char opcion;
     bool fin= true;
@@ -439,15 +447,14 @@ int main() {
         switch (opcion){
             case '1':
                 while(nueva == "si"){
-                    crearE(hoja1, id);
-                    (hoja1+count)->idHoja= count+1;
+                    hoja1.idHoja= count+1;
                     addHoja(hoja1, count);
                     imprimirHoja(hoja1, count);
-                    aux = hoja1+count;
-                    insertList(hoja, aux);
+                    insertList(hoja, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
                     cin>>nueva;
                     count++;
+                    aux=NULL;
                 }
                 guardarAr(hoja);
                 break;
