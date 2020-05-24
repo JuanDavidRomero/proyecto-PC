@@ -9,7 +9,7 @@
 #include "listas.hpp"
 
 template<typename T>
-void insertList(Nodo<T> *&list, T *dato){
+void insertList(Nodo<T> *&list, T dato){
     Nodo<T> *Nnode = new Nodo<T>;
     Nnode->dato = dato;
     
