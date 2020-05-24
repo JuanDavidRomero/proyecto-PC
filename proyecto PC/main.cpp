@@ -218,7 +218,8 @@ sCelda** crearMatriz(int f, int c)
             cout<<"|"<<(*(*(cel+i)+j)).nombre<<"|";
 
             (*(*(cel+i)+j)).formula = new char[30];
-            strcpy((*(*(cel+i)+j)).formula, "  ");
+            strcpy((*(*(cel+i)+j)).formula, "-");
+            (*(*(cel+i)+j)).valorNumerico = 0;
         }
         cout<<endl;
     }
@@ -246,9 +247,9 @@ void addHoja(sHoja &hoja, int count){
     }
 }
 
-void guardarAr(Nodo<sHoja> *hoja1){
+void guardarAr(Nodo<sHoja> *libro){
     sHoja call;
-    Nodo<sHoja> *currentNode = hoja1;
+    Nodo<sHoja> *currentNode = libro;
     ofstream arHoja;
     char *nombre = new char[40];
     string nombres;
@@ -260,13 +261,28 @@ void guardarAr(Nodo<sHoja> *hoja1){
     nombres.assign(nombre,strlen(nombre));
     cout<<nombres<< " guardado"<<endl;
     arHoja.open(nombres.c_str(), ios::out);
+    int numHojas = 0;
+    while(currentNode != NULL)
+    {
+        numHojas++;
+        currentNode = currentNode->sig;
+    }
+    currentNode = libro;
+
+    arHoja<<numHojas<<'\n';
 
     while(currentNode != NULL){
-        arHoja<<"Hoja numero: "<<currentNode->dato.idHoja<<endl;
-        arHoja<<"Dimension: "<<currentNode->dato.filasH<<"x"<<currentNode->dato.columnasH<<endl;
+        arHoja<<currentNode->dato.columnasH<<" "<<currentNode->dato.filasH<<endl;
         for(int i = 0; i < currentNode->dato.filasH; i++){
             for(int j = 0; j < currentNode->dato.columnasH; j++){
-                arHoja<<(*(*(currentNode->dato.celdas+i)+j)).formula;
+                    if((*(*(currentNode->dato.celdas+i)+j)).valorNumerico == 0)
+                    {
+                        arHoja<<(*(*(currentNode->dato.celdas+i)+j)).formula ;
+                    }
+                    else{
+                        arHoja<<(*(*(currentNode->dato.celdas+i)+j)).valorNumerico;
+                    }
+                arHoja<<" ";
             }
             arHoja<<'\n';
         }
@@ -347,7 +363,7 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
         nombres = new char[30];
         segundo = new char[30];
         apellidos = new char[30];
-        
+
         strcpy(nombres, usuario.nombres);
         strcpy(apellidos, usuario.apellidos);
         for(int i = 0; i<2; i++){
@@ -375,7 +391,7 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
                 }
             }
             cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
-            
+
             int j = 0;
             if(nn < 1){
                 j=2;
@@ -427,10 +443,10 @@ void reclamarR(){}
 int main() {
     string nueva = "si";
     infoU usuario;
-    Nodo<sHoja> *hoja = NULL;
+    Nodo<sHoja> *libros = NULL;
     sHoja hoja1 ;
     sHoja* aux = NULL;
-    int id = 0, count = 0;
+    int id = 0, numHojas = 0, numLibros = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -447,21 +463,22 @@ int main() {
         switch (opcion){
             case '1':
                 while(nueva == "si"){
-                    hoja1.idHoja= count+1;
-                    addHoja(hoja1, count);
-                    imprimirHoja(hoja1, count);
-                    insertList(hoja, hoja1);
+                    hoja1.idHoja= numHojas+1;
+                    addHoja(hoja1, numHojas);
+                    imprimirHoja(hoja1, numHojas);
+                    insertList(libros, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
                     cin>>nueva;
-                    count++;
+                    numHojas++;
                     aux=NULL;
                 }
-                guardarAr(hoja);
+                guardarAr(libros+numLibros);
+                numLibros++;
                 break;
             case '2':
-                editarHoja(hoja1, count);
+                editarHoja(hoja1, numHojas);
             case '3':
-                generarR(hoja, usuario);
+                generarR(libros, usuario);
                 break;
             case '4':
                 fin = false;
