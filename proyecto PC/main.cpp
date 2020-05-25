@@ -527,9 +527,9 @@ int main() {
                     numHojas++;
                     aux=NULL;
                 }
-                nueva = "si";
                 guardarAr(libro);
                 libro = NULL;
+                nueva = "si";
                 break;
             case '2':
                 libro = NULL;
