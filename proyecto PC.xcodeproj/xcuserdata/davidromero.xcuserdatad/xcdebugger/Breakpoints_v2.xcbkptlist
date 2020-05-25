@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "272"
             endingLineNumber = "272"
-            landmarkName = "guardarAr(hoja1)"
+            landmarkName = "guardarAr(libro)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -30,8 +30,8 @@
             filePath = "proyecto PC/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "465"
-            endingLineNumber = "465"
+            startingLineNumber = "466"
+            endingLineNumber = "466"
             landmarkName = "main()"
             landmarkType = "9">
          </BreakpointContent>
@@ -46,8 +46,24 @@
             filePath = "proyecto PC/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "467"
-            endingLineNumber = "467"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "main()"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AE57D3E0-B037-4E3C-A792-4D1EF2F14928"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "proyecto PC/main.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
             landmarkName = "main()"
             landmarkType = "9">
          </BreakpointContent>
