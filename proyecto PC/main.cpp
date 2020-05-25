@@ -302,7 +302,7 @@ void imprimirHoja(sHoja &hoja)
 }
 
 
-void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numLibros)
+void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 {
     char* nombre = new char[60];
     cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
@@ -317,7 +317,7 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numLibros)
 
     entrada.getline(linea,100,'\n');
 
-    int numHojas = atoi(linea);
+    numHojas = atoi(linea);
     sHoja auxHoja;
 
     for(int i = 0; i < numHojas; i++)
@@ -331,7 +331,6 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numLibros)
 
         auxHoja.celdas = crearMatriz(auxHoja.filasH, auxHoja.columnasH);
 
-        cout<<"Hoja "<<i<<":"<<'\n';
         for(int y = 0; y < auxHoja.filasH; y++)
         {
             entrada.getline(linea,100,'\n');
@@ -345,16 +344,10 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numLibros)
                 pch = strtok(NULL, " ");
             }
         }
-
-        imprimirHoja(auxHoja);
-
-        Nodo<sHoja> * auxLib = libros + numLibros;
-        cout<<libros<<'\n';
-        insertList(auxLib, auxHoja);
-
+        insertList(libros, auxHoja);
     }
-    cout<<'\n'<<"imprimiendo hojas guardadas: "<<'\n';
-    Nodo<sHoja> *nodo = libros + numLibros;
+    cout<<'\n'<<"Hojas leidas del archivo: "<<'\n';
+    Nodo<sHoja> *nodo = libros;
     while(nodo != NULL)
     {
         imprimirHoja(nodo->dato);
@@ -493,24 +486,31 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
     }
 }
 
-void reclamarR(){}
+void calcularLibro(Nodo<sHoja>*libro, int numHojas)
+{
+
+}
 
 int main() {
     string nueva = "si";
     infoU usuario;
-    Nodo<sHoja> *libros = NULL;
+    Nodo<sHoja> *libro = NULL;
     sHoja hoja1 ;
     sHoja* aux = NULL;
-    int id = 0, numHojas = 0, numLibros = 0;
+    Nodo<sHoja>* auxL = NULL;
+    int numHoj = 0;
+    int id = 0, numHojas = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
         cout<<"SUPER CALCULOS S.A."<<endl;
         cout<<"------------------------------"<<endl;
-        cout<<"1. Ingresar nueva hoja de calculo"<<endl;
-        cout<<"2. Editar hoja de calculo"<<endl;
-        cout<<"3. reportes"<<endl;
-        cout<<"4. Salir"<<endl;
+        cout<<"1. Ingresar nuevo libro de calculo"<<endl;
+        cout<<"2. Leer libro de archivo de texto"<<endl;
+        cout<<"3. Editar hoja de calculo"<<endl;
+        cout<<"4. Calcular libro"<<endl;
+        cout<<"5. Generar Reportes"<<endl;
+        cout<<"6. Salir"<<endl;
         cout<<"------------------------------"<<endl;
         cout<<endl;
         cout<<"Seleccione el numero de la opcion que desea: ";
@@ -521,22 +521,37 @@ int main() {
                     hoja1.idHoja= numHojas+1;
                     addHoja(hoja1, numHojas);
                     imprimirHoja(hoja1);
-                    insertList(libros, hoja1);
+                    insertList(libro, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
                     cin>>nueva;
                     numHojas++;
                     aux=NULL;
                 }
-                guardarAr(libros+numLibros);
-                numLibros++;
+                nueva = "si";
+                guardarAr(libro);
+                libro = NULL;
                 break;
             case '2':
-                editarHoja(hoja1, numHojas);
+                libro = NULL;
+                leerLibroDeArchivo(libro, numHojas);
             case '3':
-                leerLibroDeArchivo(libros, numLibros);
-                //generarR(libros, usuario);
+                cout<<"Su libro tiene "<<numHojas<< " hojas. Que hoja desea editar?"<<'\n';
+
+                cin>>numHoj;
+                auxL = libro;
+                for(int i = 0; i < numHoj-1; i++)
+                {
+                    auxL = auxL->sig;
+                }
+                editarHoja(auxL->dato, numHojas);
+                guardarAr(libro);
                 break;
             case '4':
+                calcularLibro(libro, numHojas);
+            case '5':
+                generarR(libros, usuario);
+                break;
+            case '6':
                 fin = false;
                 break;
             default:
