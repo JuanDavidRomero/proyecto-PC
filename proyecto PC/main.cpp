@@ -291,6 +291,23 @@ void guardarAr(Nodo<sHoja> *libro){
     arHoja.close();
 }
 
+void leerLibroDeArchivo()
+{
+    char* nombre = new char[60];
+    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
+    cin.getline(nombre, 60, '\n');
+
+    ifstream entrada;
+    entrada.open(nombre, ios::in);
+
+    while(!entrada.eof())
+    {
+        char* linea = new char[100];
+
+    }
+
+}
+
 void imprimirHoja(sHoja &hoja, int count)
 {
     cout<<"su hoja de calculo es la siguiente"<<endl;
