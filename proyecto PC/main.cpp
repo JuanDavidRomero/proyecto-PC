@@ -273,9 +273,7 @@ void guardarAr(Nodo<sHoja> *libro){
 
     while(currentNode != NULL){
         arHoja<<currentNode->dato.columnasH<<" "<<currentNode->dato.filasH<<endl;
-
         for(int i = 0; i < currentNode->dato.filasH; i++){
-
             for(int j = 0; j < currentNode->dato.columnasH; j++){
                     if((*(*(currentNode->dato.celdas+i)+j)).valorNumerico == 0)
                     {
