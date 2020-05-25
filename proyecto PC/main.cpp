@@ -285,22 +285,6 @@ void guardarAr(Nodo<sHoja> *libro){
     arHoja.close();
 }
 
-void leerLibroDeArchivo()
-{
-    char* nombre = new char[60];
-    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
-    cin.getline(nombre, 60, '\n');
-
-    ifstream entrada;
-    entrada.open(nombre, ios::in);
-
-    while(!entrada.eof())
-    {
-        char* linea = new char[100];
-
-    }
-
-}
 
 void imprimirHoja(sHoja &hoja, int count)
 {
@@ -318,6 +302,67 @@ void imprimirHoja(sHoja &hoja, int count)
     }
 }
 
+
+void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numLibros)
+{
+    char* nombre = new char[60];
+    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
+    cin.ignore(1);
+    cin.getline(nombre, 60, '\n');
+
+    ifstream entrada;
+    entrada.open(nombre, ios::in);
+
+    char * linea= new char[100];
+    char * pch;
+
+    entrada.getline(linea,100,'\n');
+
+    int numHojas = atoi(linea);
+    sHoja auxHoja;
+
+    for(int i = 0; i < numHojas; i++)
+    {
+        auxHoja.idHoja = i;
+        entrada.getline(linea,100,'\n');
+        pch = strtok(linea, " ");
+        auxHoja.columnasH = atoi(pch);
+        pch = strtok(NULL, " ");
+        auxHoja.filasH = atoi(pch);
+
+        auxHoja.celdas = crearMatriz(auxHoja.filasH, auxHoja.columnasH);
+
+        cout<<"Hoja "<<i<<":"<<'\n';
+        for(int y = 0; y < auxHoja.filasH; y++)
+        {
+            entrada.getline(linea,100,'\n');
+            pch = strtok(linea, " ");
+            for(int x = 0; x < auxHoja.columnasH; x++)
+            {
+                if(pch != NULL)
+                {
+                    strcpy((*(*(auxHoja.celdas +y)+x)).formula, pch);
+                }
+                pch = strtok(NULL, " ");
+            }
+        }
+
+        imprimirHoja(auxHoja);
+
+        Nodo<sHoja> * auxLib = libros + numLibros;
+        cout<<libros<<'\n';
+        insertList(auxLib, auxHoja);
+
+    }
+    cout<<'\n'<<"imprimiendo hojas guardadas: "<<'\n';
+    Nodo<sHoja> *nodo = libros + numLibros;
+    while(nodo != NULL)
+    {
+        imprimirHoja(nodo->dato);
+        nodo = nodo->sig;
+    }
+
+}
 
 
 void generarR(Nodo<sHoja> *hoja, infoU usuario){
