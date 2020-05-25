@@ -273,7 +273,10 @@ void guardarAr(Nodo<sHoja> *libro){
 
     while(currentNode != NULL){
         arHoja<<currentNode->dato.columnasH<<" "<<currentNode->dato.filasH<<endl;
+
         for(int i = 0; i < currentNode->dato.filasH; i++){
+
+            for(int j = 0; j < currentNode->dato.columnasH; j++){
                     if((*(*(currentNode->dato.celdas+i)+j)).valorNumerico == 0)
                     {
             for(int j = 0; j < currentNode->dato.columnasH; j++){
@@ -289,6 +292,23 @@ void guardarAr(Nodo<sHoja> *libro){
         currentNode = currentNode->sig;
     }
     arHoja.close();
+}
+
+void leerLibroDeArchivo()
+{
+    char* nombre = new char[60];
+    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
+    cin.getline(nombre, 60, '\n');
+
+    ifstream entrada;
+    entrada.open(nombre, ios::in);
+
+    while(!entrada.eof())
+    {
+        char* linea = new char[100];
+
+    }
+
 }
 
 void imprimirHoja(sHoja &hoja, int count)
