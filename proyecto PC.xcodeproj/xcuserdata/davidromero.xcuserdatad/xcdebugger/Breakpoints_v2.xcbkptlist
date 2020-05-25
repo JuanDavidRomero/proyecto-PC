@@ -30,9 +30,9 @@
             filePath = "proyecto PC/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "466"
-            endingLineNumber = "466"
-            landmarkName = "main()"
+            startingLineNumber = "461"
+            endingLineNumber = "461"
+            landmarkName = "generarR(hoja, usuario)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -46,9 +46,9 @@
             filePath = "proyecto PC/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
-            landmarkName = "main()"
+            startingLineNumber = "463"
+            endingLineNumber = "463"
+            landmarkName = "generarR(hoja, usuario)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -62,9 +62,9 @@
             filePath = "proyecto PC/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "461"
-            endingLineNumber = "461"
-            landmarkName = "main()"
+            startingLineNumber = "456"
+            endingLineNumber = "456"
+            landmarkName = "generarR(hoja, usuario)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>

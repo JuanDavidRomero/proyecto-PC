@@ -285,12 +285,7 @@ void guardarAr(Nodo<sHoja> *libro){
     arHoja.close();
 }
 
-void leerLibroDeArchivo(){
-    char* nombre = new char[60];
-    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
-    cin.getline(nombre, 60, '\n');
-
-void imprimirHoja(sHoja &hoja, int count)
+void imprimirHoja(sHoja &hoja)
 {
     cout<<"su hoja de calculo es la siguiente"<<endl;
     int cols = hoja.columnasH;
@@ -525,7 +520,7 @@ int main() {
                 while(nueva == "si"){
                     hoja1.idHoja= numHojas+1;
                     addHoja(hoja1, numHojas);
-                    imprimirHoja(hoja1, numHojas);
+                    imprimirHoja(hoja1);
                     insertList(libros, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
                     cin>>nueva;
@@ -538,7 +533,8 @@ int main() {
             case '2':
                 editarHoja(hoja1, numHojas);
             case '3':
-                generarR(libros, usuario);
+                leerLibroDeArchivo(libros, numLibros);
+                //generarR(libros, usuario);
                 break;
             case '4':
                 fin = false;
