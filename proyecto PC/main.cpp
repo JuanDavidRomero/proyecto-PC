@@ -549,7 +549,7 @@ int main() {
             case '4':
                 calcularLibro(libro, numHojas);
             case '5':
-                generarR(libros, usuario);
+                generarR(libro, usuario);
                 break;
             case '6':
                 fin = false;
