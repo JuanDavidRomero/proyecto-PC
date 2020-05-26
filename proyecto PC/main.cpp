@@ -422,8 +422,6 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 
 void generarR(Nodo<sHoja> *libro){
     string reclamar;
-
-
     if(libro == NULL)
         cout<<"No ha cargado ningun libro al sistema"<<endl;
     else{
@@ -445,7 +443,6 @@ void generarR(Nodo<sHoja> *libro){
             entrada.open(nombres.c_str(), ios::in);
             char* linea = new char[100];
             entrada.getline(linea, 100, '\n');
-
             int numDes = atoi(linea);
             infoU usuario;
 
@@ -468,67 +465,74 @@ void generarR(Nodo<sHoja> *libro){
                 int h = 0;
 
                 string nombre;  //Se genera el nombre del archivo para el usuario
-                        int nn=0;
-                        char *primero, *segundo, *token, *nombres, *apellidos;
-                        primero = new char[30];
-                        nombres = new char[30];
-                        segundo = new char[30];
-                        apellidos = new char[30];
+                int nn=0;
+                char *primero, *segundo, *token, *nombres, *apellidos;
+                primero = new char[30];
+                nombres = new char[30];
+                segundo = new char[30];
+                apellidos = new char[30];
 
-                        strcpy(nombres, usuario.nombres);
-                        strcpy(apellidos, usuario.apellidos);
-                        for(int i = 0; i<2; i++){
-                            if(i==0){
-                                for(int y = 0; y<strlen(usuario.nombres);y++){
-                                    if(*(usuario.nombres +y) == ' '){
-                                        cout<<"entra nombre"<<endl;
-                                        token = strtok(nombres, " ");
-                                        nn++;
-                                    }
-                                    if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
-                                        i++;
-                                    }
-                                }
+                strcpy(nombres, usuario.nombres);
+                strcpy(apellidos, usuario.apellidos);
+                for(int i = 0; i<2; i++){
+                    if(i==0){
+                        for(int y = 0; y<strlen(usuario.nombres);y++){
+                            if(*(usuario.nombres +y) == ' '){
+                                cout<<"entra nombre"<<endl;
+                                token = strtok(nombres, " ");
+                                nn++;
                             }
-                            if(i==1){
-                                for(int y = 0; y<strlen(usuario.apellidos);y++){
-                                    if(*(usuario.apellidos+y) == ' '){
-                                        token = strtok(apellidos, " ");
-                                        nn++;
-                                    }
-                                    if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
-                                        i++;
-                                    }
-                                }
-                            }
-                            cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
-
-                            int j = 0;
-                            if(nn < 1){
-                                j=2;
-                            }
-                            for(; j<2 ; j++){
-                                if(j == 0)
-                                    strcpy(primero, token);
-                                if(j==1)
-                                    strcpy(segundo, token);
-                                token = strtok(NULL, " ");
-                            }
-                            if(i==0){
-                                strcat(primero,segundo);
-                                strcpy(nombres, primero);
-                            }
-                            if(i==1){
-                                strcat(primero,segundo);
-                                strcpy(apellidos, primero);
+                            if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
+                                i++;
                             }
                         }
-                        strcat(nombres, apellidos);
-                        strcat(nombres, ".txt");
-                        cout<<nombres<<endl;
-                        nombre.assign(nombres,strlen(nombres));
-                        cout<<nombre<<endl;
-                        ofstream reporte(nombre.c_str(), ios::out);
+                    }
+                    if(i==1){
+                        for(int y = 0; y<strlen(usuario.apellidos);y++){
+                            cout<<"entra apellido"<<endl;
+                            if(*(usuario.apellidos+y) == ' '){
+                                token = strtok(apellidos, " ");
+                                nn++;
+                            }
+                            if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
+                                i++;
+                            }
+                        }
+                    }
+                    cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+
+                    int j = 0;
+                    if(nn < 1){
+                        cout<<"entra j"<<endl;
+                        j=2;
+                        i++;
+                    }
+                    for(; j<2 ; j++){
+                        //cout<<"token "<<token<<endl;
+                        if(j == 0 && token != NULL)
+                            strcpy(primero, token);
+                            cout<<"primero "<<primero<<endl;
+                            if(j==1 && token != NULL)
+                                strcpy(segundo, token);
+                            cout<<"segundo "<<segundo<<endl;
+
+                            token = strtok(NULL, " ");
+                    }
+                    if(i==0){
+                        strcat(primero,segundo);
+                        strcpy(nombres, primero);
+                    }
+                    if(i==1){
+                        strcat(primero,segundo);
+                        strcpy(apellidos, primero);
+                    }
+                }
+                strcat(nombres, apellidos);
+                strcat(nombres, ".txt");
+                cout<<nombres<<endl;
+                nombre.assign(nombres,strlen(nombres));
+                cout<<nombre<<endl;
+                ofstream reporte(nombre.c_str(), ios::out);
                 while(auxL != NULL)
                 {
                     h++;
@@ -548,11 +552,9 @@ void generarR(Nodo<sHoja> *libro){
                     cout<<"Departamento de Finanzas. "<<endl;
                     cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
                     cout<<endl;
-
                     cout<<"Desea guardar este reporte?"<<endl;
                     cin >>reclamar;
                     if(reclamar == "si"){
-
                         reporte<<"Reporte de hoja #"<<h<<endl;
                         reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
                         reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
@@ -572,24 +574,13 @@ void generarR(Nodo<sHoja> *libro){
                         reporte<<endl;
                         //falta guardar(cout pero en txt)
                     }
-
-
                     auxL = auxL->sig;
                 }
                 reporte.close();
             }
             entrada.close();
-
-
-
-
         }
-
-
-
     }
-
-
 }
 
 void celdasStack(stack<sCelda*> s, sCelda** celdas) //Funcion recursiva
