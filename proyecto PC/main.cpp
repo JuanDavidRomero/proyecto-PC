@@ -288,6 +288,43 @@ void guardarAr(Nodo<sHoja> *libro){
     arHoja.close();
 }
 
+void guardarArCalculado(Nodo<sHoja> *libro){
+    sHoja call;
+    Nodo<sHoja> *currentNode = libro;
+    ofstream arHoja;
+    char *nombre = new char[40];
+    string nombres;
+    cout<<"Digite el nombre del archivo que va a guardar"<<endl;
+    cin.ignore(1);
+    cin.getline(nombre, 40, '\n');
+    strcat(nombre,"Calculado.txt");
+
+    nombres.assign(nombre,strlen(nombre));
+    cout<<nombres<< " guardado"<<endl;
+    arHoja.open(nombres.c_str(), ios::out);
+    int numHojas = 0;
+    while(currentNode != NULL)
+    {
+        numHojas++;
+        currentNode = currentNode->sig;
+    }
+    currentNode = libro;
+
+
+    while(currentNode != NULL){
+
+        for(int i = 0; i < currentNode->dato.filasH; i++){
+            for(int j = 0; j < currentNode->dato.columnasH; j++){
+                arHoja<<(*(*(currentNode->dato.celdas+i)+j)).valorNumerico ;
+                arHoja<<" ";
+            }
+            arHoja<<'\n';
+        }
+        currentNode = currentNode->sig;
+    }
+    arHoja.close();
+}
+
 void imprimirHoja(sHoja &hoja)
 {
     cout<<"su hoja de calculo es la siguiente"<<endl;
@@ -383,136 +420,179 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 }
 
 
-void generarR(Nodo<sHoja> *hoja, infoU usuario){
+void generarR(Nodo<sHoja> *libro){
     string reclamar;
-    ifstream entrada;
-    char *nombre = new char[40];
-    string nombres;
-    cout<<"por favor indique el nombre del archivo al que desea generar reporte"<<endl;
-    cin.ignore(1);
-    cin.getline(nombre, 40, '\n');
-    strcat(nombre,".txt");
-    nombres.assign(nombre,strlen(nombre));
-    entrada.open(nombres.c_str(), ios::in);
-    if(entrada.fail())
-        cout<<"el archivo no se pudo abrir o no existe"<<endl;
+
+
+    if(libro == NULL)
+        cout<<"No ha cargado ningun libro al sistema"<<endl;
     else{
-        usuario.nombres = new char[100];
-        usuario.apellidos = new char[30];
-        usuario.ciudad = new char[30];
-        cout<<"dijite el nombre del titular"<<endl;
-        cin.getline(usuario.nombres, 30,'\n');
-        cout<<"dijite los apellidos del titular"<<endl;
-        cin.getline(usuario.apellidos, 30,'\n');
-        cout<<"dijite ciudad"<<endl;
-        cin.getline(usuario.ciudad,30,'\n');
-
-
-        cout<<endl;
-        cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
-        cout<<"SUPER CALCULOS S.A."<<endl;
-        cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
-        cout<<usuario.ciudad<<endl;
-        cout<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana <Súperior derecha> se obtuvieron los siguientes datos: "<<endl;
-        cout<<'\t'<<"Unidades producidas <inferior derecha>"<<endl;
-        cout<<'\t'<<"Unidades vendidas <Súper ior izquierda>"<<endl;
-        cout<<'\t'<<"Utilidad Operacional <inferior izquierda>"<<endl;
-        cout<<'\t'<<"Utilidad Neta <(filas/2, columnas/2)>"<<endl;
-        cout<<"Cordial Saludo"<<endl;
-        cout<<endl;
-        cout<<"Departamento de Finanzas."<<endl;
-        cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
-        cout<<endl;
-
-
-    }
-    entrada.close();
-    cout<<"desea guardar su reporte?"<<endl;
-    cin >>reclamar;
-    if(reclamar == "si"){
-        string nombre;
-        int nn=0;
-        char *primero, *segundo, *token, *nombres, *apellidos;
-        primero = new char[30];
-        nombres = new char[30];
-        segundo = new char[30];
-        apellidos = new char[30];
-
-        strcpy(nombres, usuario.nombres);
-        strcpy(apellidos, usuario.apellidos);
-        for(int i = 0; i<2; i++){
-            if(i==0){
-                for(int y = 0; y<strlen(usuario.nombres);y++){
-                    if(*(usuario.nombres +y) == ' '){
-                        cout<<"entra nombre"<<endl;
-                        token = strtok(nombres, " ");
-                        nn++;
-                    }
-                    if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
-                        i++;
-                    }
-                }
-            }
-            if(i==1){
-                for(int y = 0; y<strlen(usuario.apellidos);y++){
-                    if(*(usuario.apellidos+y) == ' '){
-                        token = strtok(apellidos, " ");
-                        nn++;
-                    }
-                    if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
-                        i++;
-                    }
-                }
-            }
-            cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
-
-            int j = 0;
-            if(nn < 1){
-                j=2;
-            }
-            for(; j<2 ; j++){
-                if(j == 0)
-                    strcpy(primero, token);
-                if(j==1)
-                    strcpy(segundo, token);
-                token = strtok(NULL, " ");
-            }
-            if(i==0){
-                strcat(primero,segundo);
-                strcpy(nombres, primero);
-            }
-            if(i==1){
-                strcat(primero,segundo);
-                strcpy(apellidos, primero);
-            }
+        if(!(*(*((libro->dato).celdas))).calculado)
+        {
+            cout<<"No ha calculado el libro cargado al sistema."<<'\n';
         }
-        strcat(nombres, apellidos);
-        strcat(nombres, ".txt");
-        strcpy(primero, nombres);
-        cout<<nombres<<endl;
-        nombre.assign(nombres,strlen(nombres));
-        cout<<nombre<<endl;
-        ofstream reporte(nombre.c_str(), ios::out);
-        reporte<<"reporte generado"<<endl;
-        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
-        reporte<<"SUPER CALCULOS S.A."<<endl;
-        reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
-        reporte<<usuario.ciudad<<endl;
-        reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana <Súperior derecha> se obtuvieron los siguientes datos: "<<endl;
-        reporte<<'\t'<<"Unidades producidas <inferior derecha>"<<endl;
-        reporte<<'\t'<<"Unidades vendidas <Súper ior izquierda>"<<endl;
-        reporte<<'\t'<<"Utilidad Operacional <inferior izquierda>"<<endl;
-        reporte<<'\t'<<"Utilidad Neta <(filas/2, columnas/2)>"<<endl;
-        reporte<<"Cordial Saludo"<<endl;
-        reporte<<endl;
-        reporte<<"Departamento de Finanzas."<<endl;
-        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
-        reporte<<endl;
-        //falta guardar(cout pero en txt)
+        else
+        { //Ya sabemos que se pueden generar los reportes
+
+            ifstream entrada;
+            char *nombre = new char[40];
+            string nombres;
+            cout<<"Por favor indique el nombre del archivo que contiene los destinatarios de los reportes"<<endl;
+            cin.ignore(1);
+            cin.getline(nombre, 40, '\n');
+            strcat(nombre,".txt");
+            nombres.assign(nombre,strlen(nombre));
+            entrada.open(nombres.c_str(), ios::in);
+            char* linea = new char[100];
+            entrada.getline(linea, 100, '\n');
+
+            int numDes = atoi(linea);
+            infoU usuario;
+
+            for(int i = 0; i < numDes; i++)
+            {
+                usuario.nombres = new char[100];
+                usuario.apellidos = new char[30];
+                usuario.ciudad = new char[30];
+
+                entrada.getline(linea, 100, '\n');
+                strcpy(usuario.nombres, linea);
+
+                entrada.getline(linea, 100, '\n');
+                strcpy(usuario.apellidos, linea);
+
+                entrada.getline(linea, 100, '\n');
+                strcpy(usuario.ciudad, linea);
+
+                Nodo<sHoja>* auxL = libro;
+                int h = 0;
+
+                string nombre;  //Se genera el nombre del archivo para el usuario
+                        int nn=0;
+                        char *primero, *segundo, *token, *nombres, *apellidos;
+                        primero = new char[30];
+                        nombres = new char[30];
+                        segundo = new char[30];
+                        apellidos = new char[30];
+
+                        strcpy(nombres, usuario.nombres);
+                        strcpy(apellidos, usuario.apellidos);
+                        for(int i = 0; i<2; i++){
+                            if(i==0){
+                                for(int y = 0; y<strlen(usuario.nombres);y++){
+                                    if(*(usuario.nombres +y) == ' '){
+                                        cout<<"entra nombre"<<endl;
+                                        token = strtok(nombres, " ");
+                                        nn++;
+                                    }
+                                    if((y ==strlen(usuario.nombres)-1)&&(nn<1)){
+                                        i++;
+                                    }
+                                }
+                            }
+                            if(i==1){
+                                for(int y = 0; y<strlen(usuario.apellidos);y++){
+                                    if(*(usuario.apellidos+y) == ' '){
+                                        token = strtok(apellidos, " ");
+                                        nn++;
+                                    }
+                                    if((y ==strlen(usuario.apellidos)-1)&&(nn<1)){
+                                        i++;
+                                    }
+                                }
+                            }
+                            cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+
+                            int j = 0;
+                            if(nn < 1){
+                                j=2;
+                            }
+                            for(; j<2 ; j++){
+                                if(j == 0)
+                                    strcpy(primero, token);
+                                if(j==1)
+                                    strcpy(segundo, token);
+                                token = strtok(NULL, " ");
+                            }
+                            if(i==0){
+                                strcat(primero,segundo);
+                                strcpy(nombres, primero);
+                            }
+                            if(i==1){
+                                strcat(primero,segundo);
+                                strcpy(apellidos, primero);
+                            }
+                        }
+                        strcat(nombres, apellidos);
+                        strcat(nombres, ".txt");
+                        strcpy(primero, nombres);
+                        cout<<nombres<<endl;
+                        nombre.assign(nombres,strlen(nombres));
+                        cout<<nombre<<endl;
+                        ofstream reporte(nombre.c_str(), ios::out);
+                while(auxL != NULL)
+                {
+                    h++;
+                    cout<<"Hoja numero: "<<h<<'\n';
+                    cout<<endl;
+                    cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+                    cout<<"SUPER CALCULOS S.A."<<endl;
+                    cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+                    cout<<usuario.ciudad<<endl;
+                    cout<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
+                    cout<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH)+(auxL->dato).columnasH)->valorNumerico<<endl;
+                    cout<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
+                    cout<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH)+0)->valorNumerico<<endl;
+                    cout<<'\t'<<"Utilidad Neta"<<(*((auxL->dato).celdas + (auxL->dato).filasH/2)+(auxL->dato).columnasH/2)->valorNumerico<<endl;
+                    cout<<"Cordial Saludo"<<endl;
+                    cout<<endl;
+                    cout<<"Departamento de Finanzas."<<endl;
+                    cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+                    cout<<endl;
+
+                    cout<<"Desea guardar este reporte?"<<endl;
+                    cin >>reclamar;
+                    if(reclamar == "si"){
+
+                        reporte<<"Reporte de hoja #"<<h<<endl;
+                        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
+                        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
+                        reporte<<"SUPER CALCULOS S.A."<<endl;
+                        reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
+                        reporte<<usuario.ciudad<<endl;
+                        reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
+                        reporte<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH)+(auxL->dato).columnasH)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH)+0)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Neta"<<(*((auxL->dato).celdas + (auxL->dato).filasH/2)+(auxL->dato).columnasH/2)->valorNumerico<<endl;
+                        reporte<<"Cordial Saludo"<<endl;
+                        reporte<<endl;
+                        reporte<<"Departamento de Finanzas."<<endl;
+                        reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
+                        reporte<<endl;
+                        reporte<<endl;
+                        //falta guardar(cout pero en txt)
+                    }
+
+
+                    auxL = auxL->sig;
+                }
+                entrada.close();
+            }
+
+
+
+
+        }
+
+
+
     }
+
+
 }
 
-void celdasStack(stack<sCelda*> s, sCelda** celdas)
+void celdasStack(stack<sCelda*> s, sCelda** celdas) //Funcion recursiva
 {
     stack<sCelda*> saux;
     while(!s.empty())
@@ -736,7 +816,7 @@ int main() {
                 calcularLibro(libro, numHojas);
                 break;
             case '5':
-                generarR(libro, usuario);
+                generarR(libro);
                 break;
             case '6':
                 fin = false;
