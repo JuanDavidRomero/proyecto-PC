@@ -13,6 +13,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <cmath>
+#include <stack>
 #include "listas.cpp"
 
 using namespace std;
@@ -301,6 +302,29 @@ void imprimirHoja(sHoja &hoja)
     }
 }
 
+void imprimirHojaValores(sHoja &hoja)
+{
+    cout<<"su hoja de calculo es la siguiente"<<endl;
+    int cols = hoja.columnasH;
+    int filas = hoja.filasH;
+
+     for(int i = 0; i < filas; i++)
+    {
+        for(int j = 0; j < cols; j++)
+        {
+            if((*(*(hoja.celdas+i)+j)).valorNumerico != NULL)
+            {
+                cout<<"|"<<'\t'<<(*(*(hoja.celdas+i)+j)).valorNumerico<<'\t'<<"|";
+            }
+            else
+            {
+                cout<<"|"<<'\t'<<"NULL"<<'\t'<<"|";
+            }
+        }
+        cout<<'\n';
+    }
+}
+
 
 void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 {
@@ -486,9 +510,157 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
     }
 }
 
+void celdasStack(stack<sCelda*> s, sCelda** celdas)
+{
+    stack<sCelda*> saux;
+    while(!s.empty())
+    {
+        char* form = new char[30];
+        strcpy(form, s.top()->formula);
+
+
+        if(*form == '=')
+        {
+            form = form +1; // Omite el =
+            char* tok;
+            tok = strtok(form, "+");
+
+            while(tok != NULL)
+            {
+                if(*tok >= 48 && *tok <= 57) //Es un valor numeico
+                {
+                    s.top()->valorNumerico += atoi(tok);
+                }
+                else if(*tok >= 65 && *tok <= 90)
+                {
+                    char* auxC = tok;
+                    int pos = 0;
+                    while(*auxC >= 65 && *auxC <= 90) // A3 + C3
+                    {
+                        pos++;
+                    }
+                    int fila = atoi(auxC);
+                    *(tok + pos) = '\0';
+                    int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
+
+                    if((*(*(celdas+fila)+columna)).valorNumerico != NULL)
+                    {
+                        s.top()->valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
+                    }
+                    else
+                    {
+                        saux.push(s.top());
+                        s.top()->valorNumerico = NULL; //Asi sabemos que no se pudo resolver
+
+                        break;
+                    }
+                }
+            }
+
+        }
+        else if(*form == '-')
+        {
+            s.top()->valorNumerico = 0;
+        }
+        else //Es un numero
+        {
+            s.top()->valorNumerico = atoi(form);
+        }
+
+        s.pop();
+    }
+
+    if(!saux.empty())
+    {
+        celdasStack(saux, celdas);
+    }
+}
+
 void calcularLibro(Nodo<sHoja>*libro, int numHojas)
 {
+    cout<<"Entro a calcular"<<'\n';
+    Nodo<sHoja>*auxL = libro;
+    for(int h = 0; h < numHojas; h++)
+    {
+        stack<sCelda*> celdasNR;
+        sCelda** celdas = (auxL->dato).celdas;
+        for(int i = 0; i < ((auxL->dato)).columnasH; i++)
+        {
+            for(int j = 0; j < ((auxL->dato)).filasH; j++)
+            {
+                //Accedimos a una celda especifica}
+                char* form = new char[30];
+                strcpy(form, (*(*(celdas+i)+j)).formula);
 
+
+                if(*form == '=')
+                {
+                    form = form +1; // Omite el =
+                    char* tok;
+                    tok = strtok(form, "+");
+
+                    while(tok != NULL)
+                    {
+                        if(*tok >= 48 && *tok <= 57) //Es un valor numeico
+                        {
+                            (*(*(celdas+i)+j)).valorNumerico += atoi(tok);
+                        }
+                        else if(*tok >= 65 && *tok <= 90)
+                        {
+                            char* auxC = tok;
+                            int pos = 0;
+                            while(*auxC >= 65 && *auxC <= 90) // A3 + C3
+                            {
+                                pos++;
+                            }
+                            int fila = atoi(auxC);
+                            *(tok + pos) = '\0';
+                            int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
+
+                            if((*(*(celdas+fila)+columna)).valorNumerico != NULL)
+                            {
+                                (*(*(celdas+i)+j)).valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
+                            }
+                            else
+                            {
+                                celdasNR.push((*(celdas+i)+j));
+                                (*(*(celdas+i)+j)).valorNumerico = NULL; //Asi sabemos que no se pudo resolver
+
+                                break;
+                            }
+                        }
+
+                    }
+
+                }
+                else if(*form == '-')
+                {
+                    (*(*(celdas+i)+j)).valorNumerico = 0;
+                }
+                else //Es un numero
+                {
+                    (*(*(celdas+i)+j)).valorNumerico = atoi(form);
+                }
+
+                if((*(*(celdas+i)+j)).valorNumerico != NULL)
+                {
+                    cout<<(*(*(celdas+i)+j)).valorNumerico<<" ";
+                }
+                else
+                {
+                    cout<<"NULL ";
+                }
+            }
+            cout<<'\n';
+        }
+
+        celdasStack(celdasNR, celdas);
+
+        imprimirHojaValores((auxL->dato));
+
+        cout<<'\n'<<'\n';
+        auxL = auxL->sig;
+    }
 }
 
 int main() {
