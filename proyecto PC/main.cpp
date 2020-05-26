@@ -539,14 +539,14 @@ void generarR(Nodo<sHoja> *libro){
                     cout<<"SUPER CALCULOS S.A."<<endl;
                     cout<<usuario.nombres<<" "<<usuario.apellidos<<endl;
                     cout<<usuario.ciudad<<endl;
-                    cout<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
-                    cout<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH)+(auxL->dato).columnasH)->valorNumerico<<endl;
-                    cout<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
-                    cout<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH)+0)->valorNumerico<<endl;
-                    cout<<'\t'<<"Utilidad Neta"<<(*((auxL->dato).celdas + (auxL->dato).filasH/2)+(auxL->dato).columnasH/2)->valorNumerico<<endl;
-                    cout<<"Cordial Saludo"<<endl;
+                    cout<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH-1)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
+                    cout<<'\t'<<"Unidades producidas "<< (*((auxL->dato).celdas + (auxL->dato).filasH-1)+(auxL->dato).columnasH-1)->valorNumerico<<endl;
+                    cout<<'\t'<<"Unidades vendidas "<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
+                    cout<<'\t'<<"Utilidad Operacional "<<(*((auxL->dato).celdas + (auxL->dato).filasH-1)+0)->valorNumerico<<endl;
+                    cout<<'\t'<<"Utilidad Neta "<<((*((auxL->dato).celdas + ((auxL->dato).filasH-1)/2)+((auxL->dato).columnasH-1)/2))->valorNumerico<<endl;
+                    cout<<"Cordial Saludo "<<endl;
                     cout<<endl;
-                    cout<<"Departamento de Finanzas."<<endl;
+                    cout<<"Departamento de Finanzas. "<<endl;
                     cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
                     cout<<endl;
 
@@ -561,10 +561,10 @@ void generarR(Nodo<sHoja> *libro){
                         reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
                         reporte<<usuario.ciudad<<endl;
                         reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
-                        reporte<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH)+(auxL->dato).columnasH)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH-1)+(auxL->dato).columnasH-1)->valorNumerico<<endl;
                         reporte<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
-                        reporte<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH)+0)->valorNumerico<<endl;
-                        reporte<<'\t'<<"Utilidad Neta"<<(*((auxL->dato).celdas + (auxL->dato).filasH/2)+(auxL->dato).columnasH/2)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH-1)+0)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Neta"<<((*((auxL->dato).celdas + ((auxL->dato).filasH-1)/2)+((auxL->dato).columnasH-1)/2))->valorNumerico<<endl;
                         reporte<<"Cordial Saludo"<<endl;
                         reporte<<endl;
                         reporte<<"Departamento de Finanzas."<<endl;
