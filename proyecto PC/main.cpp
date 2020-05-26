@@ -510,9 +510,8 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
     }
 }
 
-bool celdasStack(stack<sCelda*> s, sCelda** celdas)
+void celdasStack(stack<sCelda*> s, sCelda** celdas)
 {
-    bool termino = false;
     stack<sCelda*> saux;
     while(!s.empty())
     {
@@ -528,8 +527,6 @@ bool celdasStack(stack<sCelda*> s, sCelda** celdas)
 
             while(tok != NULL)
             {
-                
-                cout<<"se queda"<<endl;
                 if(*tok >= 48 && *tok <= 57) //Es un valor numeico
                 {
                     s.top()->valorNumerico += atoi(tok);
@@ -579,11 +576,7 @@ bool celdasStack(stack<sCelda*> s, sCelda** celdas)
 
     if(!saux.empty())
     {
-        termino = celdasStack(saux, celdas);
-    }
-    else
-    {
-        return true;
+        celdasStack(saux, celdas);
     }
 }
 
@@ -669,7 +662,7 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
             cout<<'\n';
         }
 
-        bool termino = celdasStack(celdasNR, celdas);
+        celdasStack(celdasNR, celdas);
 
         imprimirHojaValores((auxL->dato));
 
