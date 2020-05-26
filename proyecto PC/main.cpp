@@ -539,6 +539,7 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
                     while(*auxC >= 65 && *auxC <= 90) // A3 + C3
                     {
                         pos++;
+                        auxC = auxC+1;
                     }
                     int fila = atoi(auxC);
                     *(tok + pos) = '\0';
@@ -556,6 +557,7 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
                         break;
                     }
                 }
+                tok = strtok(NULL, "+");
             }
 
         }
@@ -613,6 +615,7 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                             while(*auxC >= 65 && *auxC <= 90) // A3 + C3
                             {
                                 pos++;
+                                auxC= auxC+1;
                             }
                             int fila = atoi(auxC);
                             *(tok + pos) = '\0';
@@ -624,8 +627,8 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                             }
                             else
                             {
-                                celdasNR.push((*(celdas+i)+j));
                                 (*(*(celdas+i)+j)).valorNumerico = NULL; //Asi sabemos que no se pudo resolver
+                                celdasNR.push((*(celdas+i)+j));
 
                                 break;
                             }
