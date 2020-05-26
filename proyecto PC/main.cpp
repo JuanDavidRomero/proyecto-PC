@@ -814,6 +814,7 @@ int main() {
                 break;
             case '4':
                 calcularLibro(libro, numHojas);
+                guardarArCalculado(libro);
                 break;
             case '5':
                 generarR(libro);
