@@ -109,7 +109,7 @@ int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
     return resp;
 }
 
-void editarHoja(sHoja &hoja, int count)
+void editarHoja(sHoja &hoja)
 {
     string s = "si";
     cin.ignore(1);
@@ -221,7 +221,7 @@ sCelda** crearMatriz(int f, int c)
 
 
 
-void addHoja(sHoja &hoja, int count){
+void addHoja(sHoja &hoja){
     cout<<"Cuantas columnas tendra su hoja de calculo?"<<endl;
     cin >> hoja.columnasH;
     cout<<"Cuantas filas tendra su hoja de calculo?"<<endl;
@@ -235,7 +235,7 @@ void addHoja(sHoja &hoja, int count){
 
     if(r == "si")
     {
-        editarHoja(hoja, count);
+        editarHoja(hoja);
     }
 }
 
@@ -740,7 +740,7 @@ int main() {
                 libro = NULL;
                 while(nueva == "si"){
                     hoja1.idHoja= numHojas+1;
-                    addHoja(hoja1, numHojas);
+                    addHoja(hoja1);
                     imprimirHoja(hoja1);
                     insertList(libro, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
@@ -766,7 +766,7 @@ int main() {
                     {
                         auxL = auxL->sig;
                     }
-                    editarHoja(auxL->dato, numHojas);
+                    editarHoja(auxL->dato);
                     guardarAr(libro);
                 }
                 else
