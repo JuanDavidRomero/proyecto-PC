@@ -2,7 +2,7 @@
 //  main.cpp
 //  proyecto PC
 //
-//  Created by David Romero on 23/04/20.
+//  Created by David Romero, Santiago Barbosa and Andres Dorado on 23/04/20.
 //  Copyright © 2020 Arct. All rights reserved.
 //
 
@@ -33,12 +33,6 @@ struct sHoja{
     int columnasH;
     int idHoja;
     sCelda** celdas;
-};
-
-struct sLibro{
-    Nodo<sHoja> lista;
-    char* nombreLibro;
-    int cantHojas;
 };
 
 struct infoU{
@@ -117,21 +111,21 @@ int calcularNumeroColumna(char* col) //La respuesta ira de 0 a 18277
 
 void editarHoja(sHoja &hoja, int count)
 {
-    char s = 's';
-    while(s == 's' )
+    string s = "si";
+    cin.ignore(1);
+    while(s == "si" )
     {
         cout<< "Digite el nombre de la celda (ej: ABC321) que quiere modificar"<<'\n';
+        cout<<"Digite las letras en mayuscula"<<endl;
         char* resp = new char[10];
-        cin.ignore(1);
         cin.getline(resp, 10, '\n');
-
-        cout<<"Se leyo: "<<resp<<'\n';
 
         int col = 0;
         int fil = 0;
 
         if(resp[0] >= 65 && resp[0] <= 90)//El usuario escogio buscar por el nombre de la celda
         {
+            cout<<"Se leyo: "<<resp<<" correctamente"<<'\n';
             int i = 0;
             for(i = 0; i < strlen(resp); i++)
             {
@@ -143,7 +137,6 @@ void editarHoja(sHoja &hoja, int count)
 
             char* filChar = (resp+i);
             fil = atoi(filChar);
-            cout<<"Escogio la fila: "<<fil<<'\n';
             fil--;
 
             char* colChars = new char[strlen(resp) - strlen(resp+i)];
@@ -153,12 +146,7 @@ void editarHoja(sHoja &hoja, int count)
             }
             *(colChars + strlen(resp) - strlen(resp+i)) = '\0';
 
-
             col = calcularNumeroColumna(colChars);
-            cout<<"Escogio la columna: "<<col<< " de lo que se leyo: "<< colChars<<'\n';
-
-            cout<<"Celda: "<<calcularNombreColumna(col)<<fil+1<<  "   real:  "<<(*(*(hoja.celdas+fil)+col)).nombre<<'\n';
-
             int val =0;
             while(val==0){
                 cout<<"Digite el valor que quiere ingresar"<<'\n';
@@ -182,16 +170,17 @@ void editarHoja(sHoja &hoja, int count)
         else
         {
             cout<<"Formato invalido. Vuelva a intentar"<<'\n';
-            s = 'r';
+            s = "re";
         }
 
-        if(s == 'r')
+        if(s == "re")
         {
-            s = 's';
+            s = "si";
         }
         else{
-            cout<<"Desea editar otra celda? (s/n)"<<'\n';
+            cout<<"Desea editar otra celda?"<<'\n';
             cin>>s;
+            cin.ignore(1);
         }
     }
 }
@@ -240,24 +229,22 @@ void addHoja(sHoja &hoja, int count){
     sCelda** cels = crearMatriz(hoja.filasH, hoja.columnasH);
     hoja.celdas = cels;
 
-    cout<<"Desea entrar en el modo de edicion de su hoja? (s/n)"<<'\n';
-    char r = 'n';
+    cout<<"Desea entrar en el modo de edicion de su hoja?"<<'\n';
+    string r = "no";
     cin>>r;
 
-    if(r == 's')
+    if(r == "si")
     {
         editarHoja(hoja, count);
     }
 }
 
 void guardarAr(Nodo<sHoja> *libro){
-    sHoja call;
     Nodo<sHoja> *currentNode = libro;
     ofstream arHoja;
     char *nombre = new char[40];
     string nombres;
-    cout<<"Digite el nombre del archivo que va a guardar"<<endl;
-    cin.ignore(1);
+    cout<<"Digite el nombre del archivo que va a guardar: ";
     cin.getline(nombre, 40, '\n');
     strcat(nombre,".txt");
 
@@ -289,7 +276,6 @@ void guardarAr(Nodo<sHoja> *libro){
 }
 
 void guardarArCalculado(Nodo<sHoja> *libro){
-    sHoja call;
     Nodo<sHoja> *currentNode = libro;
     ofstream arHoja;
     char *nombre = new char[40];
@@ -301,6 +287,7 @@ void guardarArCalculado(Nodo<sHoja> *libro){
 
     nombres.assign(nombre,strlen(nombre));
     cout<<nombres<< " guardado"<<endl;
+    cout<<endl;
     arHoja.open(nombres.c_str(), ios::out);
     int numHojas = 0;
     while(currentNode != NULL)
@@ -321,6 +308,7 @@ void guardarArCalculado(Nodo<sHoja> *libro){
             arHoja<<'\n';
         }
         currentNode = currentNode->sig;
+        arHoja<<endl;
     }
     arHoja.close();
 }
@@ -368,9 +356,10 @@ void imprimirHojaValores(sHoja &hoja)
 void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 {
     char* nombre = new char[60];
-    cout<<"Introduzca el nombre del archivo que desea leer (con .txt)"<<'\n';
+    cout<<"Introduzca el nombre del archivo que desea leer"<<'\n';
     cin.ignore(1);
     cin.getline(nombre, 60, '\n');
+    strcat(nombre, ".txt");
 
     ifstream entrada;
     entrada.open(nombre, ios::in);
@@ -468,8 +457,7 @@ void generarR(Nodo<sHoja> *libro){
                 int h = 0;
 
                 string nombre;  //Se genera el nombre del archivo para el usuario
-                int nn=0;
-                char *token, *nombres, *apellidos, *auxNombre;
+                char *nombres, *apellidos, *auxNombre;
                 nombres = new char[30];
                 apellidos = new char[30];
                 auxNombre = new char[30];
@@ -493,13 +481,12 @@ void generarR(Nodo<sHoja> *libro){
                 }
 
                 strcat(auxNombre, ".txt");
-                cout<<"NOM: "<<auxNombre<<endl;
                 nombre.assign(auxNombre,strlen(auxNombre));
-                cout<<nombre<<endl;
                 ofstream reporte(nombre.c_str(), ios::out);
                 while(auxL != NULL)
                 {
                     h++;
+                    cout<<endl;
                     cout<<"Hoja numero: "<<h<<'\n';
                     cout<<endl;
                     cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
@@ -528,19 +515,19 @@ void generarR(Nodo<sHoja> *libro){
                         reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
                         reporte<<usuario.ciudad<<endl;
                         reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH-1)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
-                        reporte<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH-1)+(auxL->dato).columnasH-1)->valorNumerico<<endl;
-                        reporte<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
-                        reporte<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH-1)+0)->valorNumerico<<endl;
-                        reporte<<'\t'<<"Utilidad Neta"<<((*((auxL->dato).celdas + ((auxL->dato).filasH-1)/2)+((auxL->dato).columnasH-1)/2))->valorNumerico<<endl;
-                        reporte<<"Cordial Saludo"<<endl;
+                        reporte<<'\t'<<"Unidades producidas "<< (*((auxL->dato).celdas + (auxL->dato).filasH-1)+(auxL->dato).columnasH-1)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Unidades vendidas "<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Operacional "<<(*((auxL->dato).celdas + (auxL->dato).filasH-1)+0)->valorNumerico<<endl;
+                        reporte<<'\t'<<"Utilidad Neta "<<((*((auxL->dato).celdas + ((auxL->dato).filasH-1)/2)+((auxL->dato).columnasH-1)/2))->valorNumerico<<endl;
+                        reporte<<"Cordial Saludo "<<endl;
                         reporte<<endl;
-                        reporte<<"Departamento de Finanzas."<<endl;
+                        reporte<<"Departamento de Finanzas. "<<endl;
                         reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
                         reporte<<endl;
                         reporte<<endl;
                         //falta guardar(cout pero en txt)
                     }
-
+                    cout<<"Guardado como "<< nombre<<endl;
 
                     auxL = auxL->sig;
                 }
@@ -664,6 +651,7 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                         if(*tok >= 48 && *tok <= 57) //Es un valor numeico
                         {
                             (*(*(celdas+i)+j)).valorNumerico += atoi(tok);
+                            (*(*(celdas+i)+j)).calculado = true;
                         }
                         else if(*tok >= 65 && *tok <= 90)
                         {
@@ -726,13 +714,12 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
 
 int main() {
     string nueva = "si";
-    infoU usuario;
     Nodo<sHoja> *libro = NULL;
     sHoja hoja1 ;
     sHoja* aux = NULL;
     Nodo<sHoja>* auxL = NULL;
     int numHoj = 0;
-    int id = 0, numHojas = 0;
+    int numHojas = 0;
     char opcion;
     bool fin= true;
     while(fin == true){
@@ -758,6 +745,7 @@ int main() {
                     insertList(libro, hoja1);
                     cout<<"¿quiere agregar una nueva hoja de calculo?"<<endl;
                     cin>>nueva;
+                    cin.ignore(1);
                     numHojas++;
                     aux=NULL;
                 }
@@ -769,16 +757,20 @@ int main() {
                 leerLibroDeArchivo(libro, numHojas);
                 break;
             case '3':
-                cout<<"Su libro tiene "<<numHojas<< " hojas. Que hoja desea editar?"<<'\n';
+                if(numHojas>0){
+                    cout<<"Su libro tiene "<<numHojas<< " hojas. Que hoja desea editar?"<<'\n';
 
-                cin>>numHoj;
-                auxL = libro;
-                for(int i = 0; i < numHoj-1; i++)
-                {
-                    auxL = auxL->sig;
+                    cin>>numHoj;
+                    auxL = libro;
+                    for(int i = 0; i < numHoj-1; i++)
+                    {
+                        auxL = auxL->sig;
+                    }
+                    editarHoja(auxL->dato, numHojas);
+                    guardarAr(libro);
                 }
-                editarHoja(auxL->dato, numHojas);
-                guardarAr(libro);
+                else
+                    cout<<"Error, no se encontro hoja"<<endl;
                 break;
             case '4':
                 calcularLibro(libro, numHojas);
