@@ -512,6 +512,7 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
 
 void celdasStack(stack<sCelda*> s, sCelda** celdas)
 {
+    cout<<"EN FUNCION celdaSTACK"<<'\n';
     stack<sCelda*> saux;
     while(!s.empty())
     {
@@ -689,6 +690,7 @@ int main() {
         cin >>opcion;
         switch (opcion){
             case '1':
+                libro = NULL;
                 while(nueva == "si"){
                     hoja1.idHoja= numHojas+1;
                     addHoja(hoja1, numHojas);
@@ -700,7 +702,6 @@ int main() {
                     aux=NULL;
                 }
                 guardarAr(libro);
-                libro = NULL;
                 nueva = "si";
                 break;
             case '2':
