@@ -528,6 +528,8 @@ bool celdasStack(stack<sCelda*> s, sCelda** celdas)
 
             while(tok != NULL)
             {
+                
+                cout<<"se queda"<<endl;
                 if(*tok >= 48 && *tok <= 57) //Es un valor numeico
                 {
                     s.top()->valorNumerico += atoi(tok);
