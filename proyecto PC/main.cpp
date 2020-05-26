@@ -422,6 +422,8 @@ void leerLibroDeArchivo(Nodo<sHoja>* &libros, int &numHojas)
 
 void generarR(Nodo<sHoja> *libro){
     string reclamar;
+
+
     if(libro == NULL)
         cout<<"No ha cargado ningun libro al sistema"<<endl;
     else{
@@ -443,6 +445,7 @@ void generarR(Nodo<sHoja> *libro){
             entrada.open(nombres.c_str(), ios::in);
             char* linea = new char[100];
             entrada.getline(linea, 100, '\n');
+
             int numDes = atoi(linea);
             infoU usuario;
 
@@ -513,9 +516,11 @@ void generarR(Nodo<sHoja> *libro){
                     cout<<"Departamento de Finanzas. "<<endl;
                     cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
                     cout<<endl;
+
                     cout<<"Desea guardar este reporte?"<<endl;
                     cin >>reclamar;
                     if(reclamar == "si"){
+
                         reporte<<"Reporte de hoja #"<<h<<endl;
                         reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
                         reporte<<"------------------------------------------------------------------------------------------------------------"<<endl;
@@ -535,13 +540,24 @@ void generarR(Nodo<sHoja> *libro){
                         reporte<<endl;
                         //falta guardar(cout pero en txt)
                     }
+
+
                     auxL = auxL->sig;
                 }
                 reporte.close();
             }
             entrada.close();
+
+
+
+
         }
+
+
+
     }
+
+
 }
 
 void celdasStack(stack<sCelda*> s, sCelda** celdas) //Funcion recursiva
