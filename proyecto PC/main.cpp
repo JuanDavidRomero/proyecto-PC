@@ -525,7 +525,6 @@ void generarR(Nodo<sHoja> *libro){
                         }
                         strcat(nombres, apellidos);
                         strcat(nombres, ".txt");
-                        strcpy(primero, nombres);
                         cout<<nombres<<endl;
                         nombre.assign(nombres,strlen(nombres));
                         cout<<nombre<<endl;
@@ -560,7 +559,7 @@ void generarR(Nodo<sHoja> *libro){
                         reporte<<"SUPER CALCULOS S.A."<<endl;
                         reporte<<usuario.nombres<<" "<<usuario.apellidos<<endl;
                         reporte<<usuario.ciudad<<endl;
-                        reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
+                        reporte<<"Después de un análisis detallado de cada movimiento de efectivo realizado en la semana "<< (*((auxL->dato).celdas + 0)+(auxL->dato).columnasH-1)->valorNumerico<<" se obtuvieron los siguientes datos: "<<endl;
                         reporte<<'\t'<<"Unidades producidas"<< (*((auxL->dato).celdas + (auxL->dato).filasH-1)+(auxL->dato).columnasH-1)->valorNumerico<<endl;
                         reporte<<'\t'<<"Unidades vendidas"<<(*((auxL->dato).celdas + 0)+0)->valorNumerico<<endl;
                         reporte<<'\t'<<"Utilidad Operacional"<<(*((auxL->dato).celdas + (auxL->dato).filasH-1)+0)->valorNumerico<<endl;
@@ -577,8 +576,9 @@ void generarR(Nodo<sHoja> *libro){
 
                     auxL = auxL->sig;
                 }
-                entrada.close();
+                reporte.close();
             }
+            entrada.close();
 
 
 
