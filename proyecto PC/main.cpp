@@ -510,9 +510,9 @@ void generarR(Nodo<sHoja> *hoja, infoU usuario){
     }
 }
 
-void celdasStack(stack<sCelda*> s, sCelda** celdas)
+bool celdasStack(stack<sCelda*> s, sCelda** celdas)
 {
-    cout<<"EN FUNCION celdaSTACK"<<'\n';
+    bool termino = false;
     stack<sCelda*> saux;
     while(!s.empty())
     {
@@ -545,14 +545,16 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
                     *(tok + pos) = '\0';
                     int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
 
-                    if((*(*(celdas+fila)+columna)).valorNumerico != NULL)
+                    cout<<"Celda: "<<columna<<","<<fila<<"  "<<(*(*(celdas+fila)+columna)).valorNumerico<<'\n';
+                    if((*(*(celdas+fila)+columna)).valorNumerico != -1)
                     {
                         s.top()->valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
                     }
                     else
                     {
+                        cout<<s.top()->formula<<'\n';
                         saux.push(s.top());
-                        s.top()->valorNumerico = NULL; //Asi sabemos que no se pudo resolver
+                        s.top()->valorNumerico = -1; //Asi sabemos que no se pudo resolver
 
                         break;
                     }
@@ -575,7 +577,11 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
 
     if(!saux.empty())
     {
-        celdasStack(saux, celdas);
+        termino = celdasStack(saux, celdas);
+    }
+    else
+    {
+        return true;
     }
 }
 
@@ -622,13 +628,13 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                             *(tok + pos) = '\0';
                             int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
 
-                            if((*(*(celdas+fila)+columna)).valorNumerico != NULL)
+                            if((*(*(celdas+fila)+columna)).valorNumerico != -1)
                             {
                                 (*(*(celdas+i)+j)).valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
                             }
                             else
                             {
-                                (*(*(celdas+i)+j)).valorNumerico = NULL; //Asi sabemos que no se pudo resolver
+                                (*(*(celdas+i)+j)).valorNumerico = -1; //Asi sabemos que no se pudo resolver
                                 celdasNR.push((*(celdas+i)+j));
 
                                 break;
@@ -661,7 +667,7 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
             cout<<'\n';
         }
 
-        celdasStack(celdasNR, celdas);
+        bool termino = celdasStack(celdasNR, celdas);
 
         imprimirHojaValores((auxL->dato));
 
