@@ -631,6 +631,8 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                             }
                         }
 
+                        tok = strtok(NULL, "+");
+
                     }
 
                 }
