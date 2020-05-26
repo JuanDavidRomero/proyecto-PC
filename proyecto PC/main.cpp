@@ -220,7 +220,7 @@ sCelda** crearMatriz(int f, int c)
 
             (*(*(cel+i)+j)).formula = new char[30];
             strcpy((*(*(cel+i)+j)).formula, "-");
-            (*(*(cel+i)+j)).valorNumerico = 0;
+            (*(*(cel+i)+j)).valorNumerico = NULL;
         }
         cout<<endl;
     }
@@ -612,12 +612,13 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                         {
                             char* auxC = tok;
                             int pos = 0;
-                            while(*auxC >= 65 && *auxC <= 90) // A3 + C3
+                            while(*auxC >= 65 && *auxC <= 90) // A1
                             {
                                 pos++;
                                 auxC= auxC+1;
                             }
                             int fila = atoi(auxC);
+                            fila--;
                             *(tok + pos) = '\0';
                             int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
 
@@ -712,6 +713,7 @@ int main() {
             case '2':
                 libro = NULL;
                 leerLibroDeArchivo(libro, numHojas);
+                break;
             case '3':
                 cout<<"Su libro tiene "<<numHojas<< " hojas. Que hoja desea editar?"<<'\n';
 
@@ -726,6 +728,7 @@ int main() {
                 break;
             case '4':
                 calcularLibro(libro, numHojas);
+                break;
             case '5':
                 generarR(libro, usuario);
                 break;
