@@ -25,6 +25,7 @@ struct sCelda{
     char columna;
     char* formula;
     float valorNumerico;
+    bool calculado;
 };
 
 struct sHoja{
@@ -220,7 +221,8 @@ sCelda** crearMatriz(int f, int c)
 
             (*(*(cel+i)+j)).formula = new char[30];
             strcpy((*(*(cel+i)+j)).formula, "-");
-            (*(*(cel+i)+j)).valorNumerico = NULL;
+            (*(*(cel+i)+j)).valorNumerico = 0;
+            (*(*(cel+i)+j)).calculado = false;
         }
         cout<<endl;
     }
@@ -541,19 +543,23 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
                         auxC = auxC+1;
                     }
                     int fila = atoi(auxC);
+                    fila--;
                     *(tok + pos) = '\0';
                     int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
 
-                    cout<<"Celda: "<<columna<<","<<fila<<"  "<<(*(*(celdas+fila)+columna)).valorNumerico<<'\n';
-                    if((*(*(celdas+fila)+columna)).valorNumerico != -1)
+                    cout<<"Celda: "<<columna<<","<<fila<<"  "<<(*(*(celdas+fila)+columna)).calculado<<'\n';
+                    if((*(*(celdas+fila)+columna)).calculado)
                     {
+                        cout<<"Calculado: "<<s.top()->formula<<'\n';
                         s.top()->valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
+                        s.top()->calculado = true;
                     }
                     else
                     {
                         cout<<s.top()->formula<<'\n';
+                        s.top()->valorNumerico= 0;
+                        s.top()->calculado = false; //Asi sabemos que no se pudo resolver
                         saux.push(s.top());
-                        s.top()->valorNumerico = -1; //Asi sabemos que no se pudo resolver
 
                         break;
                     }
@@ -565,10 +571,12 @@ void celdasStack(stack<sCelda*> s, sCelda** celdas)
         else if(*form == '-')
         {
             s.top()->valorNumerico = 0;
+            s.top()->calculado = true;
         }
         else //Es un numero
         {
             s.top()->valorNumerico = atoi(form);
+            s.top()->calculado = true;
         }
 
         s.pop();
@@ -623,13 +631,15 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                             *(tok + pos) = '\0';
                             int columna = calcularNumeroColumna(tok); //Aqui ya tenemos el numero de la columna y el numero de la fila
 
-                            if((*(*(celdas+fila)+columna)).valorNumerico != -1)
+                            if((*(*(celdas+fila)+columna)).calculado)
                             {
                                 (*(*(celdas+i)+j)).valorNumerico += (*(*(celdas+fila)+columna)).valorNumerico;
+                                (*(*(celdas+i)+j)).calculado = true;
                             }
                             else
                             {
-                                (*(*(celdas+i)+j)).valorNumerico = -1; //Asi sabemos que no se pudo resolver
+                                (*(*(celdas+i)+j)).valorNumerico = 0;
+                                (*(*(celdas+i)+j)).calculado = false;//Asi sabemos que no se pudo resolver
                                 celdasNR.push((*(celdas+i)+j));
 
                                 break;
@@ -644,20 +654,15 @@ void calcularLibro(Nodo<sHoja>*libro, int numHojas)
                 else if(*form == '-')
                 {
                     (*(*(celdas+i)+j)).valorNumerico = 0;
+                    (*(*(celdas+i)+j)).calculado = true;
                 }
                 else //Es un numero
                 {
                     (*(*(celdas+i)+j)).valorNumerico = atoi(form);
+                    (*(*(celdas+i)+j)).calculado = true;
                 }
 
-                if((*(*(celdas+i)+j)).valorNumerico != NULL)
-                {
-                    cout<<(*(*(celdas+i)+j)).valorNumerico<<" ";
-                }
-                else
-                {
-                    cout<<"NULL ";
-                }
+                cout<<(*(*(celdas+i)+j)).valorNumerico<<" ";
             }
             cout<<'\n';
         }
